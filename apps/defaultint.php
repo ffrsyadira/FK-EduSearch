@@ -15,7 +15,7 @@
     <nav class="d-flex justify-content-between fixed-top" id="navbarset">
         <div style="display: flex; align-items: center;">
             <div id="logofkedu">
-                <img src="" alt="fkedusearch">
+                <img src="assets/img/logofkedusearch.png" alt="fkedusearch"  id="logoedu">
                 &nbsp;
                 <h6 class="text-dark fw-bolder">FK-EduSearch</h6>
             </div>
