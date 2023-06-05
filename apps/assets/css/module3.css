@@ -7,3 +7,8 @@
 .imgintable {
     width: 40px;
 }
+
+#inputboxstyle {
+    width: 300px;
+    display: inline;
+}
