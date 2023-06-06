@@ -1,5 +1,5 @@
 <?php
-include "connection.php";
+include "config/connection.php";
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +71,15 @@ include "connection.php";
             </div>
             <div>
                 <div>
-                    <div id="postingbox">rgsdefwxw vgcc</div>
+                    <div id="postingbox">
+                        <div class="d-flex justify-content-between">
+                            <h5 style="padding-left: 20px;" class="fw-bolder">NEW POST!</h5>
+                            <div style="padding-right: 20px;">timer</div>
+                        </div>
+                        <div class="border-top" style="color: black;"></div>
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit totam ea explicabo, consequuntur aspernatur repudiandae error optio ipsum fugiat praesentium minima, debitis blanditiis saepe eos a sed cum veritatis excepturi.</p>
+                        <button type="btn" class="btn fw-bolder" id="btnusername" style="float: right; margin-right: 20px;">ANSWER NOW</button>
+                    </div>
                 </div>
             </div>
         </div>
