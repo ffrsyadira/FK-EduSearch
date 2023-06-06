@@ -1,3 +1,7 @@
+<?php
+include "connection.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +75,7 @@
             <div>
                 <div style="margin: 30px 0px 0px 30px;">
                     <div>
-                        <form action="" method="post">
+                        <form action="m3_updateexpertise.php" method="post">
                             <h5 class="text-uppercase fw-bolder" style="padding-bottom: 20px;">PROFILE</h5>
                             <div class="d-flex flex-row">
                                 <div style="width: 600px">
@@ -95,7 +99,6 @@
                                         <label>Expert Office Number :</label>&nbsp;&nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Office Number" required>
                                     </div>
-                                    
                                 </div>
                                 <div style="width: 600px">
                                     <div>
@@ -118,15 +121,15 @@
                             </div>
                             <br>
                             <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">UPDATE PROFILE</button>
+                                <button type="submit" class="btn btn-primary" name="submit">UPDATE PROFILE</button>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button type="reset" class="btn btn-danger">RESET ALL</button>
+                                <button type="reset" class="btn btn-danger" name="reset">RESET ALL</button>
                             </div>
                         </form>
                     </div>
                     <br>
                     <div>
-                        <form action="" method="post">
+                        <form action="m3_updateexpertise.php" method="post">
                             <h5 class="text-uppercase fw-bolder" style="padding-bottom: 15px;">CREDENTIALS</h5>
                             <h6 class="text-uppercase fw-bolder">RESEARCH AREA</h6>
                             <h6 class="text-uppercase fw-bolder">CURRENT RESEARCH AREA :</h6>
@@ -151,7 +154,7 @@
                     </div>
                     <br>
                     <div>
-                        <form action="" method="post">
+                        <form action="m3_updateexpertise.php" method="post">
                             <h6 class="text-uppercase fw-bolder">PUBLICATION</h6>
                             <table style="width:60%;" class="table table-bordered" align="center">
                             <thead>
@@ -195,7 +198,7 @@
                     </div>
                     <br>
                     <div>
-                        <form action="" method="post">
+                        <form action="m3_updateexpertise.php" method="post">
                             <h5 class="text-uppercase fw-bolder">SOCIAL MEDIA</h5>
                             <table style="width:50%;" class="table table-bordered" align="center">
                             <thead>
