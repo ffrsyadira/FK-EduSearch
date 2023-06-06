@@ -7,3 +7,14 @@
 .imgintable {
     width: 40px;
 }
+
+#inputboxstyle {
+    width: 300px;
+    display: inline;
+}
+
+#postingbox {
+    border: 2px solid rgb(148, 26, 26);
+    height: 300px; 
+    width: 500px;
+}
