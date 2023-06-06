@@ -14,7 +14,9 @@
 }
 
 #postingbox {
-    border: 2px solid rgb(148, 26, 26);
-    height: 300px; 
-    width: 500px;
+    background-color: rgb(228, 221, 198);
+    border: 2px solid rgb(11, 117, 117);
+    min-height: 200px; 
+    width: 600px;
+    border-radius: 10%;
 }
