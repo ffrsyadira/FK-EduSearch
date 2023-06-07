@@ -66,21 +66,21 @@ include "config/connection.php";
 
         <!-- content -->
         <div id="maincontentpage">
-            <div class="p-2 mb-1 bg-primary text-white">
-                <h5 class="text-uppercase fw-bolder">POST</h5>
+            <div class="d-flex p-2 mb-1 bg-primary text-white">
+                <button class="btn btn-transparent btn-sm">
+                    <img src="assets/img/return.png" alt="back" style="width: 30px;">
+                </button>
+                <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">ALL FEEDBACK</h5>
             </div>
-            <div style="padding-top: 20px;">
-                <div class="d-flex justify-content-center align-items-center">
-                    <div id="postingbox">
-                        <div class="d-flex justify-content-between" id="postingboxpadset1">
-                            <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                            <div id="postingboxpadset3">time remaining : hh:mm</div>
-                        </div>
-                        <hr>
-                        <h6>Title</h6>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit totam ea explicabo, consequuntur aspernatur repudiandae error optio ipsum fugiat praesentium minima, debitis blanditiis saepe eos a sed cum veritatis excepturi.</p>
-                        <button type="btn" class="btn fw-bolder btnanspost" id="btnusername">ANSWER NOW</button>
-                    </div>
+            <div style="padding: 20px 0px 0px 40px">
+                <div id="feedbackbox">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, laudantium qui enim ut nobis hic amet doloremque? Iure nulla ab saepe similique, obcaecati reprehenderit fuga esse voluptate. Consectetur, commodi voluptas?</p>
+                    <p style="float: right; padding-right: 10px;">FROM USER</p>
+                </div>
+                <br><br>
+                <div id="feedbackbox">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, laudantium qui enim ut nobis hic amet doloremque? Iure nulla ab saepe similique, obcaecati reprehenderit fuga esse voluptate. Consectetur, commodi voluptas?</p>
+                    <p style="float: right; padding-right: 10px;">FROM USER</p>
                 </div>
             </div>
         </div>
@@ -93,5 +93,3 @@ include "config/connection.php";
 
     </body>
 </html>
-
-
