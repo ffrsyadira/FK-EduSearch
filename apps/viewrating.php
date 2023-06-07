@@ -67,20 +67,22 @@ include "config/connection.php";
         <!-- content -->
         <div id="maincontentpage">
             <div class="p-2 mb-1 bg-primary text-white">
-                <h5 class="text-uppercase fw-bolder">POST</h5>
+                <h5 class="text-uppercase fw-bolder">VISUALIZE RATING</h5>
             </div>
-            <div style="padding-top: 20px;">
-                <div class="d-flex justify-content-center align-items-center">
-                    <div id="postingbox">
-                        <div class="d-flex justify-content-between" id="postingboxpadset1">
-                            <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                            <div id="postingboxpadset3">time remaining : hh:mm</div>
+            <div style="padding: 20px 0px 0px 40px">
+                <div>
+                    <h5 class="fw-bolder">YOUR RATING</h5>
+                    <div class="d-flex">
+                        <div id="ratebox" >
+                            <span class="h1 fw-bolder">5.0</span>
                         </div>
-                        <hr>
-                        <h6>Title</h6>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit totam ea explicabo, consequuntur aspernatur repudiandae error optio ipsum fugiat praesentium minima, debitis blanditiis saepe eos a sed cum veritatis excepturi.</p>
-                        <button type="btn" class="btn fw-bolder btnanspost" id="btnusername">ANSWER NOW</button>
+                        &nbsp;&nbsp;&nbsp;
+                        <img src="assets/img/star.png" alt="star" id="starshow">
                     </div>
+                </div>
+                <br>
+                <div>
+                    YOUR VISUALIZE
                 </div>
             </div>
         </div>
@@ -93,5 +95,3 @@ include "config/connection.php";
 
     </body>
 </html>
-
-

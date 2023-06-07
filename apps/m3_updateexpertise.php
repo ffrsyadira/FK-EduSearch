@@ -121,118 +121,110 @@ include "config/connection.php";
                             </div>
                             <br>
                             <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary" name="submit">UPDATE PROFILE</button>
+                                <button type="submit" class="btn btn-primary" name="submitprofileupdate">UPDATE PROFILE</button>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="reset" class="btn btn-danger" name="reset">RESET ALL</button>
                             </div>
-                        </form>
-                    </div>
-                    <br>
-                    <div>
-                        <form action="m3_updateexpertise.php" method="post">
-                            <h5 class="text-uppercase fw-bolder" style="padding-bottom: 15px;">CREDENTIALS</h5>
-                            <h6 class="text-uppercase fw-bolder">RESEARCH AREA</h6>
-                            <h6 class="text-uppercase fw-bolder">CURRENT RESEARCH AREA :</h6>
-
-                            <label>ENTER RESEARCH AREA:</label><br>
-                            <select class="form-select" aria-label="Default select example" id="inputboxstyle" required>
-                                <option>CHOOSE RESEARCH AREA</option>
-                                <option value="ARTIFICIAL INTELLIGENCE">ARTIFICIAL INTELLIGENCE</option>
-                                <option value="BIG DATA">BIG DATA</option>
-                                <option value="CYBERSECURITY">CYBERSECURITY</option>
-                                <option value="GRAPHIC DESIGNING">GRAPHIC DESIGNING</option>
-                                <option value="SOFTWARE MANAGEMENT">SOFTWARE MANAGEMENT</option>
-                                <option value="BLOCKCHAIN">BLOCKCHAIN</option>
-                            </select>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="text" class="form-control" id="inputboxstyle" placeholder="For Expertise That Not In The List">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary">UPDATE EXPERTISE</button>
-                            &nbsp;&nbsp;
-                            <button type="reset" class="btn btn-danger">RESET</button>
-                        </form>
-                    </div>
-                    <br>
-                    <div>
-                        <form action="m3_updateexpertise.php" method="post">
-                            <h6 class="text-uppercase fw-bolder">PUBLICATION</h6>
-                            <table style="width:60%;" class="table table-bordered" align="center">
-                            <thead>
-                                <tr style="background-color: #D3D3D3;">
-                                    <th scope="col"style="width: 50px;">No</th>
-                                    <th scope="col"style="width: 100px;">Date</th>
-                                    <th scope="col"style="width: 300px;">Publication</th>
-                                    <th scope="col"style="width: 40px;">DELETE</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>Mark</td>
-                                    <td>Mark</td>
-                                    <td class="d-flex justify-content-around">
-                                        <button class="btn btn-transparent">
-                                            <img src="assets/img/dustbin.png" alt="view" class="imgintable">
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            </table>
-                            <div style="padding-top: 10px;">
-                                <label>Publication Name :</label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Name" required>
-                            </div>
-                            <div style="padding-top: 15px;">
-                                <label>Publication Date :</label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" required>
-                                <em>dd-mm-yyyy</em>
-                            </div>
                             <br>
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">UPDATE PUBLICATION</button>
+                            <div>
+                                <h5 class="text-uppercase fw-bolder" style="padding-bottom: 15px;">CREDENTIALS</h5>
+                                <h6 class="text-uppercase fw-bolder">RESEARCH AREA</h6>
+                                <h6 class="text-uppercase fw-bolder">CURRENT RESEARCH AREA :</h6>
+                                <label>ENTER RESEARCH AREA:</label><br>
+                                <select class="form-select" aria-label="Default select example" id="inputboxstyle" required>
+                                    <option>CHOOSE RESEARCH AREA</option>
+                                    <option value="ARTIFICIAL INTELLIGENCE">ARTIFICIAL INTELLIGENCE</option>
+                                    <option value="BIG DATA">BIG DATA</option>
+                                    <option value="CYBERSECURITY">CYBERSECURITY</option>
+                                    <option value="GRAPHIC DESIGNING">GRAPHIC DESIGNING</option>
+                                    <option value="SOFTWARE MANAGEMENT">SOFTWARE MANAGEMENT</option>
+                                    <option value="BLOCKCHAIN">BLOCKCHAIN</option>
+                                </select>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button type="reset" class="btn btn-secondary">VISUALIZE PUBLICATION</button>
+                                <input type="text" class="form-control" id="inputboxstyle" placeholder="For Expertise That Not In The List">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="submit" class="btn btn-primary" name="submitexpertiseupdate">UPDATE EXPERTISE</button>
+                                &nbsp;&nbsp;
+                                <button type="reset" class="btn btn-danger">RESET</button>
                             </div>
-                        </form>
-                    </div>
-                    <br>
-                    <div>
-                        <form action="m3_updateexpertise.php" method="post">
-                            <h5 class="text-uppercase fw-bolder">SOCIAL MEDIA</h5>
-                            <table style="width:50%;" class="table table-bordered" align="center">
-                            <thead>
-                                <tr style="background-color: #D3D3D3;">
-                                    <th scope="col"style="width: 50px;">No</th>
-                                    <th scope="col"style="width: 100px;">Username</th>
-                                    <th scope="col"style="width: 100px;">Type</th>
-                                    <th scope="col"style="width: 40px;">DELETE</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>Mark</td>
-                                    <td>Mark</td>
-                                    <td class="d-flex justify-content-around">
-                                        <button class="btn btn-transparent">
-                                            <img src="assets/img/dustbin.png" alt="view" class="imgintable">
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            </table>
                             <br>
-                            <h6>ADD SOCIAL MEDIA ACCOUNT</h6>
-                            <div style="padding-top: 10px;">
-                                <label>Username :</label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Username" required>
+                            <div>
+                                <h6 class="text-uppercase fw-bolder">PUBLICATION</h6>
+                                <table style="width:60%;" class="table table-bordered" align="center">
+                                <thead>
+                                    <tr style="background-color: #D3D3D3;">
+                                        <th scope="col"style="width: 50px;">No</th>
+                                        <th scope="col"style="width: 100px;">Date</th>
+                                        <th scope="col"style="width: 300px;">Publication</th>
+                                        <th scope="col"style="width: 40px;">DELETE</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                        <td class="d-flex justify-content-around">
+                                            <button class="btn btn-transparent">
+                                                <img src="assets/img/dustbin.png" alt="view" class="imgintable">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                                <div style="padding-top: 10px;">
+                                    <label>Publication Name :</label>&nbsp;&nbsp;&nbsp;
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Name" required>
+                                </div>
+                                <div style="padding-top: 15px;">
+                                    <label>Publication Date :</label>&nbsp;&nbsp;&nbsp;
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" required>
+                                    <em>dd-mm-yyyy</em>
+                                </div>
+                                <br>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary" name="submitpublicationeupdate">UPDATE PUBLICATION</button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="reset" class="btn btn-secondary">VISUALIZE PUBLICATION</button>
+                                </div>
                             </div>
-                            <div style="padding-top: 10px;">
-                                <label>Social Media Type :</label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" required>&nbsp;&nbsp;&nbsp;
-                                <button type="submit" class="btn btn-primary">UPDATE SOCIAL MEDIA</button>
+                            <br>
+                            <div>
+                                <h5 class="text-uppercase fw-bolder">SOCIAL MEDIA</h5>
+                                <table style="width:50%;" class="table table-bordered" align="center">
+                                <thead>
+                                    <tr style="background-color: #D3D3D3;">
+                                        <th scope="col"style="width: 50px;">No</th>
+                                        <th scope="col"style="width: 100px;">Username</th>
+                                        <th scope="col"style="width: 100px;">Type</th>
+                                        <th scope="col"style="width: 40px;">DELETE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                        <td>Mark</td>
+                                        <td class="d-flex justify-content-around">
+                                            <button class="btn btn-transparent">
+                                                <img src="assets/img/dustbin.png" alt="view" class="imgintable">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                                <br>
+                                <h6>ADD SOCIAL MEDIA ACCOUNT</h6>
+                                <div style="padding-top: 10px;">
+                                    <label>Username :</label>&nbsp;&nbsp;&nbsp;
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Username" required>
+                                </div>
+                                <div style="padding-top: 10px;">
+                                    <label>Social Media Type :</label>&nbsp;&nbsp;&nbsp;
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" required>&nbsp;&nbsp;&nbsp;
+                                    <button type="submit" class="btn btn-primary" name="submitsocmedupdate">UPDATE SOCIAL MEDIA</button>
+                                </div>
                             </div>
                         </form>
                     </div>
