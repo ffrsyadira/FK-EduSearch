@@ -1,6 +1,17 @@
 <?php
+// tk siap
 session_start();
 include "config/connection.php";
+
+$Expert_Name = $_POST["Expert_Name"];
+$Expert_Age = $_POST["Expert_Age"];
+$Expert_Email = $_POST["Expert_Email"];
+$Expert_OfficeNum = $_POST["Expert_OfficeNum"];
+$Expert_Address = $_POST["Expert_Address"];
+$Expert_HP = $_POST["Expert_HP"];
+$Expert_Pass = $_POST["Expert_Pass"];
+$Expert_CV = $_POST["Expert_CV"];
+
 ?>
 
 <!DOCTYPE html>
@@ -79,41 +90,41 @@ include "config/connection.php";
                                 <div style="width: 600px">
                                     <div>
                                         <label class="h6">Expert ID :</label>&nbsp;&nbsp;&nbsp;
-                                        <p class="h6" style="margin: 0; display: inline;">Expert ID</p>
+                                        <p class="h6" style="margin: 0; display: inline;" name="Expert_ID">Expert ID</p>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Name :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Name" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Name" name="Expert_Name" required>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Age :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Age" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Age" name="Expert_Age" required>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Email :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Email" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Email" name="Expert_Email" required>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Office Number :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Office Number" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Office Number" name="Expert_OfficeNum" required>
                                     </div>
                                 </div>
                                 <div style="width: 600px">
                                     <div>
                                         <label>Expert Address :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Address" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Address" name="Expert_Address" required>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Phone Number :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Phone Number" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Phone Number" name="Expert_HP" required>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Password :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Password" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Password" name="Expert_Pass" required>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert CV :</label>&nbsp;&nbsp;&nbsp;
-                                        <input class="form-control form-control-sm" id="inputboxstyle" type="file"placeholder="Enter Expert CV" required>
+                                        <input class="form-control form-control-sm" id="inputboxstyle" type="file"placeholder="Enter Expert CV" name="Expert_CV" required>
                                     </div>
                                 </div>
                             </div>
