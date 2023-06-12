@@ -82,7 +82,7 @@ include "config/connection.php";
                             <img src="assets/img/star.png" alt="star" id="starshow">
                         </div>
                         <br>
-                        <button type="btn" class="btn btn-secondary">VISUALIZE RATING</button>
+                        <button type="btn" class="btn btn-secondary" name="rateview">VISUALIZE RATING</button>
                     </div>
                     <br><br>
                     <div>
@@ -96,7 +96,7 @@ include "config/connection.php";
                     </div>
                 </div>
                 <br>
-                <button type="btn" class="btn fw-bolder" id="btnusername">VIEW ALL<br>FEEDBACK</button>
+                <button type="btn" class="btn fw-bolder btnusername" id="" name="viewallfeedrate">VIEW ALL<br>FEEDBACK</button>
             </div>
         </div>
     </div>

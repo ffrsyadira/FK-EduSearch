@@ -72,6 +72,7 @@ include "config/connection.php";
             </div>
             <div>
                 <div>
+                    <br>
                     <div>
                         <table class="table table-bordered" align="center">
                         <thead>
@@ -80,8 +81,6 @@ include "config/connection.php";
                                 <th scope="col"style="width: 100px;">Expert ID</th>
                                 <th scope="col"style="width: 400px;">Expert Name</th>
                                 <th scope="col"style="width: 150px;">Rating</th>
-                                <th scope="col"style="width: 150px;">Rating</th>
-                                <th scope="col"style="width: 250px;">View</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,11 +89,6 @@ include "config/connection.php";
                                 <td>Mark</td>
                                 <td>Mark</td>
                                 <td>Mark</td>
-                                <td>Mark</td>
-                                <td class="d-flex justify-content-around">
-                                    <button class="btn btn-transparent">
-                                        <img src="assets/img/evaluation.png" alt="view" class="imgintable">
-                                    </button>
                                 </td>
                             </tr>
                         </tbody>

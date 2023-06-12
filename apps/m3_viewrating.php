@@ -67,8 +67,11 @@ include "config/connection.php";
 
         <!-- content -->
         <div id="maincontentpage">
-            <div class="p-2 mb-1 bg-primary text-white">
-                <h5 class="text-uppercase fw-bolder">VISUALIZE RATING</h5>
+            <div class="d-flex p-2 mb-1 bg-primary text-white">
+                <button class="btn btn-transparent btn-sm" name="myrating">
+                    <img src="assets/img/return.png" alt="back" style="width: 30px;">
+                </button>
+                <h5 class="text-uppercase fw-bolder" style="margin-top: 5px;">VISUALIZE RATING</h5>
             </div>
             <div style="padding: 20px 0px 0px 40px">
                 <div>

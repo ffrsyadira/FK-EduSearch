@@ -90,7 +90,7 @@ include "config/connection.php";
                                 <td>Mark</td>
                                 <td>Mark</td>
                                 <td class="d-flex justify-content-around">
-                                    <button class="btn btn-transparent">
+                                    <button class="btn btn-transparent" name="viewexpertiseupdatedetail">
                                         <img src="assets/img/evaluation.png" alt="view" class="imgintable">
                                     </button>
                                     <button class="btn btn-transparent">

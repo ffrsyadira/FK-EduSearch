@@ -68,9 +68,6 @@ include "config/connection.php";
         <!-- content -->
         <div id="maincontentpage">
             <div class="d-flex p-2 mb-1 bg-primary text-white">
-                <button class="btn btn-transparent btn-sm">
-                    <img src="assets/img/return.png" alt="back" style="width: 30px;">
-                </button>
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">UPDATE EXPERTISE</h5>
             </div>
             <div>
