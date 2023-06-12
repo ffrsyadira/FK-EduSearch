@@ -22,20 +22,35 @@ $(document).ready(function() {
 
     $(document).on("click", "#respondpost", function() {
         window.location.href = "m3_respondpost.php"
-    })
+    });
+
+    $(document).on("click", "[name='viewallfeedrate']", function() {
+        window.location.href = "m3_viewallfeedback.php";
+    });
+
+    $(document).on("click", "[name='rateview']", function() {
+        window.location.href = "m3_viewrating.php";
+    });
 
     // ADMIN JQUERY FUNCTION
     // side navbar
     $(document).on("click", "[name='expertupdate']", function() {
         window.location.href = "m3_expertiseupdate.php";
-    })
+    });
 
     $(document).on("click", "[name='assignpost']", function() {
         window.location.href = "m3_assignpost.php";
-    })
+    });
 
     $(document).on("click", "[name='allrating']", function() {
         window.location.href = "m3_allrating.php";
-    })
+    });
 
+    $(document).on("click", "[name='viewexpertiseupdatedetail']", function() {
+        window.location.href = "m3_viewexpertiseupdate.php";
+    });
+
+    $(document).on("click", "[name='backtoexpertiseupdate']", function() {
+        window.location.href = "m3_expertiseupdate.php";
+    });
 });
