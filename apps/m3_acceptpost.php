@@ -78,8 +78,26 @@ include "config/connection.php";
                             <div id="postingboxpadset3">time remaining : hh:mm</div>
                         </div>
                         <hr>
-                        <h6>Title</h6>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit totam ea explicabo, consequuntur aspernatur repudiandae error optio ipsum fugiat praesentium minima, debitis blanditiis saepe eos a sed cum veritatis excepturi.</p>
+                        <?php
+                        if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+                            $expertId = $_SESSION['expert_id'];
+                        
+                            try {
+                                $sql = "SELECT Post_Title, Post_Description FROM post WHERE expert_id = :expert_id";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bindParam(':expert_id', $expertId);
+                                $stmt->execute();
+                        
+                                // Fetch data and process it
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
+                                    echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "Error: " . $e->getMessage();
+                            }
+                        }
+                        ?>
                         <button type="btn" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</button>
                     </div>
                 </div>

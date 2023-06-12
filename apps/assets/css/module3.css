@@ -44,6 +44,11 @@
     height:100px;
 }
 
+#titlerespond {
+    background-color: rgb(228, 221, 198);
+    width: 600px;
+}
+
 #ratebox {
     width: 90px;
     height: 80px;

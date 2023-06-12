@@ -1,9 +1,3 @@
-<?php
-session_start();
-include "config/connection.php";
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,16 +76,65 @@ include "config/connection.php";
                                 <div id="postingboxpadset3">time remaining : hh:mm</div>
                             </div>
                             <hr>
-                            <h6>Title</h6>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit totam ea explicabo, consequuntur aspernatur repudiandae error optio ipsum fugiat praesentium minima, debitis blanditiis saepe eos a sed cum veritatis excepturi.</p>
+                            <?php
+                                if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+                                    $expertId = $_SESSION['expert_id'];
+                                
+                                    try {
+                                        $sql = "SELECT Post_Title, Post_Description FROM post WHERE expert_id = :expert_id";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(':expert_id', $expertId);
+                                        $stmt->execute();
+                                
+                                        // Fetch data and process it
+                                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                            echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
+                                            echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
+                                        }
+                                    } catch (PDOException $e) {
+                                        echo "Error: " . $e->getMessage();
+                                    }
+                                }
+                            ?>
                         </div>
                     </div>
                     <br><br>
                     <div align="center">
                         <h5 class="fw-bolder">ANSWER POST</h5>
-                        <textarea class="respondexpert" placeholder="enter your respond"></textarea>
-                        <br><br>
-                        <button type="submit" class="btn fw-bolder" id="btnusername" name="submitrespond">POST NOW</button>
+                        <form action="" method="POST">
+                            <input type="text" class="form-control form-control-sm" id="titlerespond" placeholder="Enter Respond Title" name="PA_Title" required>
+                            <br>
+                            <textarea class="respondexpert" placeholder="Enter your respond" name="PA_Desc" required></textarea>
+                            <br><br>
+                            <button type="submit" class="btn fw-bolder" id="btnusername" name="submitrespond">POST NOW</button>
+                        </form>
+
+                        <?php
+                        include "config/connection.php";
+
+                        if(isset($_POST['submitrespond'])) {
+                            $PA_Title = $_POST["PA_Title"];
+                            $PA_Desc = $_POST["PA_Desc"];
+
+                            try {
+                                $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
+                                $stmt->bindParam(':PA_Title', $PA_Title);
+                                $stmt->bindParam(':PA_Desc', $PA_Desc);
+                                $stmt->bindParam(':Post_ID', $postID);
+                                $stmt->bindParam(':Expert_ID', $expertID);
+                                
+                                $postID = 1;
+                                $expertID = $_SESSION['expert_id'];
+
+                                $stmt->execute();
+
+                                echo "<script>alert('Your answer is published')</script>";
+                            } catch (PDOException $e) {
+                                echo "Error: " . $e->getMessage();
+                            }
+                            $conn = null;
+                        }
+                        ?>
                     </div>
                 </form>
             </div>
