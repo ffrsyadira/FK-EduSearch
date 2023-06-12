@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "config/connection.php";
 ?>
 
@@ -30,7 +31,7 @@ include "config/connection.php";
         </div>
         <div style="display: flex; align-items: center;">
             <div>
-                <button type="button" class="btn fw-bolder" id="btnusername">USERNAME</button>
+                <button type="button" class="btn fw-bolder btnusername" id="">USERNAME</button>
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div>
@@ -49,16 +50,16 @@ include "config/connection.php";
                 <div class="d-flex justify-content-center">
                     <div class="list-group" style="width: 14rem;">
                         <br>
-                        <button class="btn fw-bolder" id="btnusername">HOME</button>
+                        <button class="btn fw-bolder btnusername" id="">HOME</button>
                     </div>
                 </div>
                 <br><br>
                 <div class="d-flex justify-content-center">
                     <div class="list-group" style="width: 14rem;">
                         <br>
-                        <button class="btn fw-bolder mb-2" id="btnusername">EXPERTISE UPDATE</button>
-                        <button class="btn fw-bolder mb-2" id="btnusername">ASSIGN POST</button>
-                        <button class="btn fw-bolder mb-2" id="btnusername">ALL RATING</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="expertupdate">EXPERTISE UPDATE</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="assignpost">ASSIGN POST</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="allrating">ALL RATING</button>
                     </div>
                 </div>
             </div>
