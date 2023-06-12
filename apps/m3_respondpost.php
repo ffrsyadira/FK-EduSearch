@@ -1,5 +1,7 @@
 <?php
+session_start();
 include "config/connection.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +32,7 @@ include "config/connection.php";
         </div>
         <div style="display: flex; align-items: center;">
             <div>
-                <button type="button" class="btn fw-bolder" id="btnusername">USERNAME</button>
+                <button type="button" class="btn fw-bolder btnusername" id="">USERNAME</button>
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div>
@@ -48,16 +50,16 @@ include "config/connection.php";
             <div>
                 <div class="d-flex justify-content-center">
                     <div class="list-group" style="width: 14rem;">
-                        <button class="btn fw-bolder" id="btnusername">HOME</button>
+                        <button class="btn fw-bolder btnusername" id="experthomebutton">HOME</button>
                     </div>
                 </div>
                 <br><br>
                 <div class="d-flex justify-content-center">
                     <div class="list-group" style="width: 14rem;">
                         <br>
-                        <button class="btn fw-bolder mb-2" id="btnusername">UPDATE EXPERTISE</button>
-                        <button class="btn fw-bolder mb-2" id="btnusername">MANAGE POST</button>
-                        <button class="btn fw-bolder mb-2" id="btnusername">MY RATING</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="updateexpertise">UPDATE EXPERTISE</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="managepost">MANAGE POST</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="myrating">MY RATING</button>
                     </div>
                 </div>
             </div>
@@ -66,7 +68,7 @@ include "config/connection.php";
         <!-- content -->
         <div id="maincontentpage">
             <div class="d-flex p-2 mb-1 bg-primary text-white">
-                <button class="btn btn-transparent btn-sm">
+                <button class="btn btn-transparent btn-sm" name="managepost">
                     <img src="assets/img/return.png" alt="back" style="width: 30px;">
                 </button>
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">RESPOND POST</h5>
@@ -89,7 +91,7 @@ include "config/connection.php";
                         <h5 class="fw-bolder">ANSWER POST</h5>
                         <textarea class="respondexpert" placeholder="enter your respond"></textarea>
                         <br><br>
-                        <button type="submit" class="btn fw-bolder" id="btnusername">POST NOW</button>
+                        <button type="submit" class="btn fw-bolder" id="btnusername" name="submitrespond">POST NOW</button>
                     </div>
                 </form>
             </div>

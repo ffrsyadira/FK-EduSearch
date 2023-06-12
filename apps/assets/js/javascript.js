@@ -1,7 +1,7 @@
 $(document).ready(function() {
     console.log("jquery is on");
 
-    $('#menu-toggle').click(function() {
+    $("#menu-toggle").click(function() {
         var mySidenav = $('#sidenavigation');
         var main = $('#maincontentpage');
         
@@ -12,5 +12,10 @@ $(document).ready(function() {
         mySidenav.animate({ width: '0' });
         main.animate({ marginLeft: '0' });
         }
+    });
+
+    // back button
+    $(document).on("click", "#back-button", function() {
+        window.history.back();
     });
 });

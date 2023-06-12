@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "config/connection.php";
 ?>
 
@@ -30,7 +31,7 @@ include "config/connection.php";
         </div>
         <div style="display: flex; align-items: center;">
             <div>
-                <button type="button" class="btn fw-bolder" id="btnusername">USERNAME</button>
+                <button type="btn" class="btn fw-bolder btnusername" id="">USERNAME</button>
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div>
@@ -49,16 +50,16 @@ include "config/connection.php";
                 <div class="d-flex justify-content-center">
                     <div class="list-group" style="width: 14rem;">
                         <br>
-                        <button class="btn fw-bolder" id="btnusername">HOME</button>
+                        <button class="btn fw-bolder btnusername" id="experthomebutton">HOME</button>
                     </div>
                 </div>
                 <br><br>
                 <div class="d-flex justify-content-center">
                     <div class="list-group" style="width: 14rem;">
                         <br>
-                        <button class="btn fw-bolder mb-2" id="btnusername">UPDATE EXPERTISE</button>
-                        <button class="btn fw-bolder mb-2" id="btnusername">MANAGE POST</button>
-                        <button class="btn fw-bolder mb-2" id="btnusername">MY RATING</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="updateexpertise">UPDATE EXPERTISE</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="managepost">MANAGE POST</button>
+                        <button class="btn fw-bolder mb-2 btnusername" id="" name="myrating">MY RATING</button>
                     </div>
                 </div>
             </div>
@@ -79,7 +80,7 @@ include "config/connection.php";
                         <hr>
                         <h6>Title</h6>
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit totam ea explicabo, consequuntur aspernatur repudiandae error optio ipsum fugiat praesentium minima, debitis blanditiis saepe eos a sed cum veritatis excepturi.</p>
-                        <button type="btn" class="btn fw-bolder btnanspost" id="btnusername">ANSWER NOW</button>
+                        <button type="btn" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</button>
                     </div>
                 </div>
             </div>
