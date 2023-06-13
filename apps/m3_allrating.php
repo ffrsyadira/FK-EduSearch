@@ -1,6 +1,6 @@
 <?php
-session_start();
-include "config/connection.php";
+    session_start();
+    include "config/connection.php";
 ?>
 
 <!DOCTYPE html>
@@ -84,13 +84,36 @@ include "config/connection.php";
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                </td>
-                            </tr>
+                            <?php
+                                $result = null;
+                                $counter = 0;
+                                
+                                try {
+                                    $sql = "SELECT E.Expert_ID, U.User_Name FROM expert E
+                                            JOIN users U ON E.User_ID = U.User_ID";
+                                
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+                                
+                                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                
+                                    foreach ($results as $row) {
+                                        $counter++;
+                                ?>
+                                <tr>
+                                    <td><?php echo $counter; ?></td>
+                                    <td><?php echo $row['Expert_ID']; ?></td>
+                                    <td><?php echo $row['User_Name']; ?></td>
+
+                                    <!-- calc rating here -->
+                                    <td>MARK</td>
+                                </tr>
+                                <?php
+                                    }
+                                } catch(PDOException $e) {
+                                    die("Database query failed: " . $e->getMessage());
+                                }
+                            ?>
                         </tbody>
                         </table>
                     </div>

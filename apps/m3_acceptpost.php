@@ -1,6 +1,10 @@
 <?php
-session_start();
-include "config/connection.php";
+    session_start();
+    include "config/connection.php";
+
+    if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+        $expertId = $_SESSION['expert_id'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -75,17 +79,14 @@ include "config/connection.php";
                     <div id="postingbox">
                         <div class="d-flex justify-content-between" id="postingboxpadset1">
                             <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                            <div id="postingboxpadset3">time remaining : hh:mm</div>
+                            <div id="postingboxpadset3">time remaining : <?php echo "rrr"; ?> </div>
                         </div>
                         <hr>
                         <?php
-                        if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
-                            $expertId = $_SESSION['expert_id'];
-                        
                             try {
                                 $sql = "SELECT Post_Title, Post_Description FROM post WHERE expert_id = :expert_id";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bindParam(':expert_id', $expertId);
+                                $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
                                 $stmt->execute();
                         
                                 // Fetch data and process it
@@ -96,7 +97,6 @@ include "config/connection.php";
                             } catch (PDOException $e) {
                                 echo "Error: " . $e->getMessage();
                             }
-                        }
                         ?>
                         <button type="btn" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</button>
                     </div>
@@ -112,5 +112,3 @@ include "config/connection.php";
 
     </body>
 </html>
-
-
