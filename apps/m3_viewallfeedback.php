@@ -1,6 +1,10 @@
 <?php
-session_start();
-include "config/connection.php";
+    session_start();
+    include "config/connection.php";
+
+    if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+        $expertId = $_SESSION['expert_id'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -73,24 +77,47 @@ include "config/connection.php";
                 </button>
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">ALL FEEDBACK</h5>
             </div>
-            <div style="padding: 20px 0px 0px 40px">
-                <div id="feedbackbox">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, laudantium qui enim ut nobis hic amet doloremque? Iure nulla ab saepe similique, obcaecati reprehenderit fuga esse voluptate. Consectetur, commodi voluptas?</p>
-                    <p style="float: right; padding-right: 10px;">FROM USER</p>
-                </div>
-                <br><br>
-                <div id="feedbackbox">
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, laudantium qui enim ut nobis hic amet doloremque? Iure nulla ab saepe similique, obcaecati reprehenderit fuga esse voluptate. Consectetur, commodi voluptas?</p>
-                    <p style="float: right; padding-right: 10px;">FROM USER</p>
-                </div>
-            </div>
+            <?php
+            try {
+                $sql = "SELECT R.Rating_Feedback, U.User_Name FROM rating R
+                        JOIN users U ON R.User_ID = U.User_ID
+                        WHERE R.Expert_ID = :expert_id";
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($results as $row) {
+                    $ratingFeedback = $row['Rating_Feedback'];
+                    $userName = $row['User_Name'];
+                    ?>
+                    <div style='padding: 20px 0px 0px 40px'>
+                        <div id='feedbackbox'>
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, laudantium qui enim ut nobis hic amet doloremque? Iure nulla ab saepe similique, obcaecati reprehenderit fuga esse voluptate. Consectetur, commodi voluptas?</p>
+                            <p style='float: right; padding-right: 10px;'>FROM USER <?php echo $userName; ?></p>
+                        </div>
+                        <br><br>
+                        <div id='feedbackbox'>
+                            <p><?php echo $ratingFeedback; ?></p>
+                            <p style='float: right; padding-right: 10px;'>FROM USER</p>
+                        </div>
+                    </div>
+                    <?php
+                }
+            } catch (PDOException $e) {
+                die("Database query failed: " . $e->getMessage());
+            }
+            ?>
+
         </div>
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
 
-    </body>
+</body>
 </html>

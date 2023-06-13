@@ -1,3 +1,12 @@
+<?php
+    include "config/connection.php";
+    session_start();
+
+    if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
+        $Expert_ID = $_SESSION['Expert_ID'];
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,25 +86,22 @@
                             </div>
                             <hr>
                             <?php
-                                if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
-                                    $expertId = $_SESSION['expert_id'];
-                                
-                                    try {
-                                        $sql = "SELECT Post_Title, Post_Description FROM post WHERE expert_id = :expert_id";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(':expert_id', $expertId);
-                                        $stmt->execute();
-                                
-                                        // Fetch data and process it
-                                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                            echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
-                                            echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
-                                        }
-                                    } catch (PDOException $e) {
-                                        echo "Error: " . $e->getMessage();
+                                try {
+                                    $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->bindParam(':expert_id', $Expert_ID);
+                                    $stmt->execute();
+                            
+                                    // Fetch data and process it
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
+                                        echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
                                     }
+                                } catch (PDOException $e) {
+                                    echo "Error: " . $e->getMessage();
                                 }
-                            ?>
+                            }
+                        ?>
                         </div>
                     </div>
                     <br><br>
@@ -110,8 +116,6 @@
                         </form>
 
                         <?php
-                        include "config/connection.php";
-
                         if(isset($_POST['submitrespond'])) {
                             $PA_Title = $_POST["PA_Title"];
                             $PA_Desc = $_POST["PA_Desc"];
@@ -120,15 +124,13 @@
                                 $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
                                 $stmt->bindParam(':PA_Title', $PA_Title);
                                 $stmt->bindParam(':PA_Desc', $PA_Desc);
-                                $stmt->bindParam(':Post_ID', $postID);
-                                $stmt->bindParam(':Expert_ID', $expertID);
+                                $stmt->bindParam(':Post_ID', $Post_ID);
+                                $stmt->bindParam(':Expert_ID', $Expert_ID);
                                 
-                                $postID = 1;
-                                $expertID = $_SESSION['expert_id'];
+                                $Post_ID = 1;
+                                $Expert_ID = $_SESSION['Expert_ID'];
 
                                 $stmt->execute();
-
-                                echo "<script>alert('Your answer is published')</script>";
                             } catch (PDOException $e) {
                                 echo "Error: " . $e->getMessage();
                             }

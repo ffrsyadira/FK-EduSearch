@@ -1,6 +1,6 @@
 <?php
-session_start();
-include "config/connection.php";
+    session_start();
+    include "config/connection.php";
 ?>
 
 <!DOCTYPE html>
