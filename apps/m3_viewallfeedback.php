@@ -78,39 +78,34 @@
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">ALL FEEDBACK</h5>
             </div>
             <?php
-            try {
-                $sql = "SELECT R.Rating_Feedback, U.User_Name FROM rating R
-                        JOIN users U ON R.User_ID = U.User_ID
-                        WHERE R.Expert_ID = :expert_id";
+                try {
+                    $sql = "SELECT R.Rating_Feedback, U.User_Name FROM rating R
+                            JOIN users U ON R.User_ID = U.User_ID
+                            WHERE R.Expert_ID = :expert_id";
 
-                $stmt = $conn->prepare($sql);
-                $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
-                $stmt->execute();
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
+                    $stmt->execute();
 
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                foreach ($results as $row) {
-                    $ratingFeedback = $row['Rating_Feedback'];
-                    $userName = $row['User_Name'];
-                    ?>
+                    foreach ($results as $row) {
+                        $ratingFeedback = $row['Rating_Feedback'];
+                        $userName = $row['User_Name'];
+            ?>
                     <div style='padding: 20px 0px 0px 40px'>
                         <div id='feedbackbox'>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi, laudantium qui enim ut nobis hic amet doloremque? Iure nulla ab saepe similique, obcaecati reprehenderit fuga esse voluptate. Consectetur, commodi voluptas?</p>
+                            <p><?php echo $ratingFeedback; ?></p>
                             <p style='float: right; padding-right: 10px;'>FROM USER <?php echo $userName; ?></p>
                         </div>
                         <br><br>
-                        <div id='feedbackbox'>
-                            <p><?php echo $ratingFeedback; ?></p>
-                            <p style='float: right; padding-right: 10px;'>FROM USER</p>
-                        </div>
                     </div>
                     <?php
-                }
-            } catch (PDOException $e) {
-                die("Database query failed: " . $e->getMessage());
-            }
-            ?>
-
+                            }
+                        } catch (PDOException $e) {
+                            die("Database query failed: " . $e->getMessage());
+                        }
+                    ?>
         </div>
     </div>
 

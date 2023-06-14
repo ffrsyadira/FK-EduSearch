@@ -79,7 +79,7 @@
                     <div id="postingbox">
                         <div class="d-flex justify-content-between" id="postingboxpadset1">
                             <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                            <div id="postingboxpadset3">time remaining : <?php echo "rrr"; ?> </div>
+                            <div id="postingboxpadset3">time remaining : <?php echo "hh:mm"; ?> </div>
                         </div>
                         <hr>
                         <?php

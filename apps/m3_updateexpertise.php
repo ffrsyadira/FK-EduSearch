@@ -1,17 +1,89 @@
 <?php
-// tk siap
-session_start();
-include "config/connection.php";
+    session_start();
+    require "config/connection.php";
 
-$Expert_Name = $_POST["Expert_Name"];
-$Expert_Age = $_POST["Expert_Age"];
-$Expert_Email = $_POST["Expert_Email"];
-$Expert_OfficeNum = $_POST["Expert_OfficeNum"];
-$Expert_Address = $_POST["Expert_Address"];
-$Expert_HP = $_POST["Expert_HP"];
-$Expert_Pass = $_POST["Expert_Pass"];
-$Expert_CV = $_POST["Expert_CV"];
+    if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+        $expertId = $_SESSION['expert_id'];
+    }
 
+    $sql = null;
+
+    if (isset($_POST["submitprofileupdate"])) {
+        // Update expert profile
+        $Expert_Name = $_POST["Expert_Name"];
+        $Expert_Age = $_POST["Expert_Age"];
+        $Expert_Email = $_POST["Expert_Email"];
+        $Expert_OfficeNum = $_POST["Expert_OfficeNum"];
+        $Expert_Address = $_POST["Expert_Address"];
+        $Expert_HP = $_POST["Expert_HP"];
+        $Expert_Pass = $_POST["Expert_Pass"];
+        $Expert_CV = $_POST["Expert_CV"];
+
+        $sql = "UPDATE expert SET Expert_Name = :Expert_Name, Expert_Age = :Expert_Age, Expert_Email = :Expert_Email,
+                Expert_OfficeNum = :Expert_OfficeNum, Expert_Address = :Expert_Address, Expert_HP = :Expert_HP,
+                Expert_Pass = :Expert_Pass, Expert_CV = :Expert_CV
+                WHERE Expert_ID = :Expert_ID";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":Expert_Name", $Expert_Name);
+        $stmt->bindParam(":Expert_Age", $Expert_Age);
+        $stmt->bindParam(":Expert_Email", $Expert_Email);
+        $stmt->bindParam(":Expert_OfficeNum", $Expert_OfficeNum);
+        $stmt->bindParam(":Expert_Address", $Expert_Address);
+        $stmt->bindParam(":Expert_HP", $Expert_HP);
+        $stmt->bindParam(":Expert_Pass", $Expert_Pass);
+        $stmt->bindParam(":Expert_CV", $Expert_CV);
+        $stmt->bindParam(":Expert_ID", $expertId, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Update request is sent');</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
+        }
+    } elseif (isset($_POST["submitexpertiseupdate"])) {
+        // Update publication
+        $Publication_ID = $_POST["Publication_ID"];
+        $Publication_Title = $_POST["Publication_Title"];
+        $Publication_Date = $_POST["Publication_Date"];
+
+        $sql = "UPDATE publication SET Publication_Title = :Publication_Title, Publication_Date = :Publication_Date WHERE Publication_ID = :Publication_ID";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":Publication_Title", $Publication_Title);
+        $stmt->bindParam(":Publication_Date", $Publication_Date);
+        $stmt->bindParam(":Publication_ID", $Publication_ID);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Update request is sent');</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
+        }
+    } elseif (isset($_POST["submitsocmedupdate"])) {
+        // Update social media
+        $SMA_Username = $_POST["SMA_Username"];
+        $SMA_AccType = $_POST["SMA_AccType"];
+        $SMA_ID = $_POST["SMA_ID"];
+
+        $sql = "UPDATE socialmediaaccount SET SMA_Username = :SMA_Username, SMA_AccType = :SMA_AccType WHERE SMA_ID = :SMA_ID";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":SMA_Username", $SMA_Username);
+        $stmt->bindParam(":SMA_AccType", $SMA_AccType);
+        $stmt->bindParam(":SMA_ID", $SMA_ID);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Update request is sent');</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
+        }
+    }
+
+    // delete part  tk siap lg
+    if(isset($_POST["deletepublication"])) {
+
+    } elseif(isset($_POST["deletesocmed"])) {
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -175,7 +247,7 @@ $Expert_CV = $_POST["Expert_CV"];
                                         <td>Mark</td>
                                         <td>Mark</td>
                                         <td class="d-flex justify-content-around">
-                                            <button class="btn btn-transparent">
+                                            <button class="btn btn-transparent" name="deletepublication">
                                                 <img src="assets/img/dustbin.png" alt="view" class="imgintable">
                                             </button>
                                         </td>
@@ -184,11 +256,11 @@ $Expert_CV = $_POST["Expert_CV"];
                                 </table>
                                 <div style="padding-top: 10px;">
                                     <label>Publication Name :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Name" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Name" name="Publication_Title" required>
                                 </div>
                                 <div style="padding-top: 15px;">
                                     <label>Publication Date :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" name="Publication_Date" required>
                                     <em>dd-mm-yyyy</em>
                                 </div>
                                 <br>
@@ -216,7 +288,7 @@ $Expert_CV = $_POST["Expert_CV"];
                                         <td>Mark</td>
                                         <td>Mark</td>
                                         <td class="d-flex justify-content-around">
-                                            <button class="btn btn-transparent">
+                                            <button class="btn btn-transparent" name="deletesocmed">
                                                 <img src="assets/img/dustbin.png" alt="view" class="imgintable">
                                             </button>
                                         </td>
@@ -227,11 +299,12 @@ $Expert_CV = $_POST["Expert_CV"];
                                 <h6>ADD SOCIAL MEDIA ACCOUNT</h6>
                                 <div style="padding-top: 10px;">
                                     <label>Username :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Username" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Username" name="SMA_Username" required>
                                 </div>
                                 <div style="padding-top: 10px;">
                                     <label>Social Media Type :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" required>&nbsp;&nbsp;&nbsp;
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" name="SMA_AccType" required>
+                                    &nbsp;&nbsp;&nbsp;
                                     <button type="submit" class="btn btn-primary" name="submitsocmedupdate">UPDATE SOCIAL MEDIA</button>
                                 </div>
                             </div>
