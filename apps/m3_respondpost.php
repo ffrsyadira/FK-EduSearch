@@ -1,10 +1,10 @@
 <?php
-    include "config/connection.php";
-    session_start();
+include "config/connection.php";
+session_start();
 
-    if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
-        $Expert_ID = $_SESSION['Expert_ID'];
-    
+if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
+    $Expert_ID = $_SESSION['Expert_ID'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,9 +89,9 @@
                                 try {
                                     $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID";
                                     $stmt = $conn->prepare($sql);
-                                    $stmt->bindParam(':expert_id', $Expert_ID);
+                                    $stmt->bindParam(':Expert_ID', $Expert_ID);
                                     $stmt->execute();
-                            
+
                                     // Fetch data and process it
                                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
@@ -100,8 +100,7 @@
                                 } catch (PDOException $e) {
                                     echo "Error: " . $e->getMessage();
                                 }
-                            }
-                        ?>
+                            ?>
                         </div>
                     </div>
                     <br><br>
@@ -116,26 +115,23 @@
                         </form>
 
                         <?php
-                        if(isset($_POST['submitrespond'])) {
-                            $PA_Title = $_POST["PA_Title"];
-                            $PA_Desc = $_POST["PA_Desc"];
+                            if (isset($_POST['submitrespond'])) {
+                                $PA_Title = $_POST["PA_Title"];
+                                $PA_Desc = $_POST["PA_Desc"];
+                
+                                try {
+                                    $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
+                                    $stmt->bindParam(':PA_Title', $PA_Title);
+                                    $stmt->bindParam(':PA_Desc', $PA_Desc);
+                                    $stmt->bindParam(':Post_ID', $Post_ID);
+                                    $stmt->bindParam(':Expert_ID', $Expert_ID);
+                                    $stmt->execute();
 
-                            try {
-                                $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
-                                $stmt->bindParam(':PA_Title', $PA_Title);
-                                $stmt->bindParam(':PA_Desc', $PA_Desc);
-                                $stmt->bindParam(':Post_ID', $Post_ID);
-                                $stmt->bindParam(':Expert_ID', $Expert_ID);
-                                
-                                $Post_ID = 1;
-                                $Expert_ID = $_SESSION['Expert_ID'];
-
-                                $stmt->execute();
-                            } catch (PDOException $e) {
-                                echo "Error: " . $e->getMessage();
+                                    echo "<script>alert('Your Respond Is Submit');</script>";
+                                } catch (PDOException $e) {
+                                    echo "Error: " . $e->getMessage();
+                                }
                             }
-                            $conn = null;
-                        }
                         ?>
                     </div>
                 </form>
@@ -143,12 +139,10 @@
         </div>
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
 
     </body>
 </html>
-
-
