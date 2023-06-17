@@ -2,13 +2,16 @@
     session_start();
     include "config/connection.php";
 
-    if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
-        $expertId = $_SESSION['expert_id'];
-    }
+    // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+    //     $expertId = $_SESSION['expert_id'];
+    // }
+
+    $expertId = 1;
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,13 +22,14 @@
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/css/module3.css">
 </head>
+
 <body>
 
     <!-- navbar -->
     <nav class="d-flex justify-content-between fixed-top" id="navbarset">
         <div style="display: flex; align-items: center;">
             <div id="logofkedu">
-                <img src="assets/img/logofkedusearch.png" alt="fkedusearch"  id="logoedu">
+                <img src="assets/img/logofkedusearch.png" alt="fkedusearch" id="logoedu">
                 &nbsp;
                 <h6 class="text-dark fw-bolder">FK-EduSearch</h6>
             </div>
@@ -76,39 +80,41 @@
             </div>
             <div style="padding-top: 20px;">
                 <div class="d-flex justify-content-center align-items-center">
-                    <div id="postingbox">
-                        <div class="d-flex justify-content-between" id="postingboxpadset1">
-                            <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                            <div id="postingboxpadset3">time remaining : <?php echo "hh:mm"; ?> </div>
-                        </div>
-                        <hr>
-                        <?php
-                            try {
-                                $sql = "SELECT Post_Title, Post_Description FROM post WHERE expert_id = :expert_id";
-                                $stmt = $conn->prepare($sql);
-                                $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
-                                $stmt->execute();
-                        
-                                // Fetch data and process it
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
-                                    echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
-                                }
-                            } catch (PDOException $e) {
-                                echo "Error: " . $e->getMessage();
-                            }
+                    <div>
+                    <?php
+                        $sql = "SELECT Post_ID, Post_Title, Post_Description FROM post WHERE expert_id = :expert_id AND Post_Status = '3'"; //Post_Status = 'NEW POST'
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
+                        $stmt->execute();
+
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $post_id = $row['Post_ID'];
                         ?>
-                        <button type="btn" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</button>
+                            <div id="postingbox">
+                                <div class="d-flex justify-content-between" id="postingboxpadset1">
+                                    <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
+                                    <div id="postingboxpadset3">time remaining: <?php echo "hh:mm"; ?></div>
+                                </div>
+                                <hr>
+                                <h6 name="Post_Title"><?php echo $row['Post_Title']; ?></h6>
+                                <p name="Post_Description"><?php echo $row['Post_Description']; ?></p>
+                                <?php
+                                $queryParams = array('Post_ID' => $post_id);
+                                $url = 'm3_respondpost.php?' . http_build_query($queryParams);
+                                ?>
+                                <a href="<?php echo $url; ?>" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</a>
+                            </div>
+                            <br>
+                        <?php
+                        }
+                    ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
-
-    </body>
+</body>
 </html>

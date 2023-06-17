@@ -2,13 +2,16 @@
 include "config/connection.php";
 session_start();
 
-if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
-    $Expert_ID = $_SESSION['Expert_ID'];
-}
+// if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
+//     $Expert_ID = $_SESSION['Expert_ID'];
+// }
+
+$Expert_ID = 1;
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,13 +22,14 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/css/module3.css">
 </head>
+
 <body>
 
     <!-- navbar -->
     <nav class="d-flex justify-content-between fixed-top" id="navbarset">
         <div style="display: flex; align-items: center;">
             <div id="logofkedu">
-                <img src="assets/img/logofkedusearch.png" alt="fkedusearch"  id="logoedu">
+                <img src="assets/img/logofkedusearch.png" alt="fkedusearch" id="logoedu">
                 &nbsp;
                 <h6 class="text-dark fw-bolder">FK-EduSearch</h6>
             </div>
@@ -77,61 +81,63 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">RESPOND POST</h5>
             </div>
             <div style="padding-top: 20px;">
-                <form action="m3_respondpost.php" method="post">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div id="postingbox">
-                            <div class="d-flex justify-content-between" id="postingboxpadset1">
-                                <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                                <div id="postingboxpadset3">time remaining : hh:mm</div>
-                            </div>
-                            <hr>
-                            <?php
-                                try {
-                                    $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->bindParam(':Expert_ID', $Expert_ID);
-                                    $stmt->execute();
-
-                                    // Fetch data and process it
-                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                        echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
-                                        echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
-                                    }
-                                } catch (PDOException $e) {
-                                    echo "Error: " . $e->getMessage();
-                                }
-                            ?>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div id="postingbox">
+                        <div class="d-flex justify-content-between" id="postingboxpadset1">
+                            <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
+                            <div id="postingboxpadset3">time remaining : hh:mm</div>
                         </div>
+                        <hr>
+                        <?php
+                        if (isset($_GET['Post_ID'])) {
+                            $Post_ID = $_GET['Post_ID'];
+
+                            $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID AND Post_ID = :Post_ID";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bindParam(':Expert_ID', $Expert_ID);
+                            $stmt->bindParam(':Post_ID', $Post_ID);
+                            $stmt->execute();
+
+                            $Post_ID = '';
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $Post_ID = $row['Post_ID'];
+                                echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
+                                echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
+                            }
+                        }
+                        ?>
                     </div>
-                    <br><br>
-                    <div align="center">
-                        <h5 class="fw-bolder">ANSWER POST</h5>
-                        <form action="" method="POST">
-                            <input type="text" class="form-control form-control-sm" id="titlerespond" placeholder="Enter Respond Title" name="PA_Title" required>
-                            <br>
-                            <textarea class="respondexpert" placeholder="Enter your respond" name="PA_Desc" required></textarea>
-                            <br><br>
-                            <button type="submit" class="btn fw-bolder" id="btnusername" name="submitrespond">POST NOW</button>
-                        </form>
+                </div>
+                <br><br>
+                <div align="center">
+                    <h5 class="fw-bolder">ANSWER POST</h5>
+                    <form action="m3_respondpost.php" method="POST">
+                        <input type="text" class="form-control form-control-sm" id="titlerespond" placeholder="Enter Respond Title" name="PA_Title" required>
+                        <br>
+                        <textarea class="respondexpert" placeholder="Enter your respond" name="PA_Desc" required></textarea>
+                        <br><br>
+                        <button type="submit" class="btn fw-bolder" id="btnusername" name="submitrespond">POST NOW</button>
 
                         <?php
-                            if (isset($_POST['submitrespond'])) {
-                                $PA_Title = $_POST["PA_Title"];
-                                $PA_Desc = $_POST["PA_Desc"];
-                
-                                try {
-                                    $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
-                                    $stmt->bindParam(':PA_Title', $PA_Title);
-                                    $stmt->bindParam(':PA_Desc', $PA_Desc);
-                                    $stmt->bindParam(':Post_ID', $Post_ID);
-                                    $stmt->bindParam(':Expert_ID', $Expert_ID);
-                                    $stmt->execute();
+                        if (isset($_POST['submitrespond'])) {
+                            $PA_Title = $_POST["PA_Title"];
+                            $PA_Desc = $_POST["PA_Desc"];
 
-                                    echo "<script>alert('Your Respond Is Submit');</script>";
-                                } catch (PDOException $e) {
-                                    echo "Error: " . $e->getMessage();
-                                }
-                            }
+                            // FUNCTION BUT Post_ID not save to table postanswer then not Post_Status not update
+                            $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
+                            $stmt->bindParam(':PA_Title', $PA_Title);
+                            $stmt->bindParam(':PA_Desc', $PA_Desc);
+                            $stmt->bindParam(':Post_ID', $Post_ID);
+                            $stmt->bindParam(':Expert_ID', $Expert_ID);
+                            $stmt->execute();
+
+                            $updatePostStatus = "UPDATE post SET Post_Status = 'ANSWERED' WHERE Post_ID = :Post_ID";
+                            $updateStmt = $conn->prepare($updatePostStatus);
+                            $updateStmt->bindParam(':Post_ID', $Post_ID, PDO::PARAM_INT);
+                            $updateStmt->execute();
+
+                            echo "<script>alert('Your Respond Is Submit'); window.location.href='m3_acceptpost.php';</script>";
+                        }
                         ?>
                     </div>
                 </form>
@@ -144,5 +150,6 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
 
-    </body>
+</body>
+
 </html>

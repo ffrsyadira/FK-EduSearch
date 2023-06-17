@@ -2,80 +2,34 @@
     session_start();
     require "config/connection.php";
 
-    if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
-        $expertId = $_SESSION['expert_id'];
-    }
+    // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
+    //     $expertId = $_SESSION['expert_id'];
+    // }
+    $expertId = 1;
 
-    $sql = null;
+    // "SELECT c.*, e.Expert_Name, e.Expert_Email FROM class c JOIN expert e ON c.Class_ID = e.Expert_ID";
+
+    $sql = "SELECT e.*, u.*, ra.*, sma.*, p.* AFROM expert e 
+            JOIN user u ON e.Expert_ID = u.Expert_ID
+    JOIN research_area ra ON e.Research_Area_ID = ra.Research_Area_ID
+    JOIN sma ON e.SMA_ID = sma.SMA_ID
+    JOIN publication p ON e.Publication_ID = p.Publication_ID
+    WHERE e.Expert_ID = :expertId
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":expertId", $expertId, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (isset($_POST["submitprofileupdate"])) {
         // Update expert profile
-        $Expert_Name = $_POST["Expert_Name"];
-        $Expert_Age = $_POST["Expert_Age"];
-        $Expert_Email = $_POST["Expert_Email"];
-        $Expert_OfficeNum = $_POST["Expert_OfficeNum"];
-        $Expert_Address = $_POST["Expert_Address"];
-        $Expert_HP = $_POST["Expert_HP"];
-        $Expert_Pass = $_POST["Expert_Pass"];
-        $Expert_CV = $_POST["Expert_CV"];
-
-        $sql = "UPDATE expert SET Expert_Name = :Expert_Name, Expert_Age = :Expert_Age, Expert_Email = :Expert_Email,
-                Expert_OfficeNum = :Expert_OfficeNum, Expert_Address = :Expert_Address, Expert_HP = :Expert_HP,
-                Expert_Pass = :Expert_Pass, Expert_CV = :Expert_CV
-                WHERE Expert_ID = :Expert_ID";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(":Expert_Name", $Expert_Name);
-        $stmt->bindParam(":Expert_Age", $Expert_Age);
-        $stmt->bindParam(":Expert_Email", $Expert_Email);
-        $stmt->bindParam(":Expert_OfficeNum", $Expert_OfficeNum);
-        $stmt->bindParam(":Expert_Address", $Expert_Address);
-        $stmt->bindParam(":Expert_HP", $Expert_HP);
-        $stmt->bindParam(":Expert_Pass", $Expert_Pass);
-        $stmt->bindParam(":Expert_CV", $Expert_CV);
-        $stmt->bindParam(":Expert_ID", $expertId, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-            echo "<script>alert('Update request is sent');</script>";
-        } else {
-            echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
-        }
+        
     } elseif (isset($_POST["submitexpertiseupdate"])) {
         // Update publication
-        $Publication_ID = $_POST["Publication_ID"];
-        $Publication_Title = $_POST["Publication_Title"];
-        $Publication_Date = $_POST["Publication_Date"];
-
-        $sql = "UPDATE publication SET Publication_Title = :Publication_Title, Publication_Date = :Publication_Date WHERE Publication_ID = :Publication_ID";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(":Publication_Title", $Publication_Title);
-        $stmt->bindParam(":Publication_Date", $Publication_Date);
-        $stmt->bindParam(":Publication_ID", $Publication_ID);
-
-        if ($stmt->execute()) {
-            echo "<script>alert('Update request is sent');</script>";
-        } else {
-            echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
-        }
+        
     } elseif (isset($_POST["submitsocmedupdate"])) {
         // Update social media
-        $SMA_Username = $_POST["SMA_Username"];
-        $SMA_AccType = $_POST["SMA_AccType"];
-        $SMA_ID = $_POST["SMA_ID"];
-
-        $sql = "UPDATE socialmediaaccount SET SMA_Username = :SMA_Username, SMA_AccType = :SMA_AccType WHERE SMA_ID = :SMA_ID";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(":SMA_Username", $SMA_Username);
-        $stmt->bindParam(":SMA_AccType", $SMA_AccType);
-        $stmt->bindParam(":SMA_ID", $SMA_ID);
-
-        if ($stmt->execute()) {
-            echo "<script>alert('Update request is sent');</script>";
-        } else {
-            echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
-        }
+        
     }
 
     // delete part  tk siap lg
@@ -83,7 +37,7 @@
 
     } elseif(isset($_POST["deletesocmed"])) {
 
-    }
+    } 
 ?>
 
 <!DOCTYPE html>
@@ -162,41 +116,41 @@
                                 <div style="width: 600px">
                                     <div>
                                         <label class="h6">Expert ID :</label>&nbsp;&nbsp;&nbsp;
-                                        <p class="h6" style="margin: 0; display: inline;" name="Expert_ID">Expert ID</p>
+                                        <p class="h6" style="margin: 0; display: inline;" name="Expert_ID"><?php echo $expertId; ?></p>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Name :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Name" name="Expert_Name" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Name" name="Expert_Name" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Age :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Age" name="Expert_Age" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Age" name="Expert_Age" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Email :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Email" name="Expert_Email" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Email" name="Expert_Email" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Office Number :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Office Number" name="Expert_OfficeNum" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Office Number" name="Expert_OfficeNum" >
                                     </div>
                                 </div>
                                 <div style="width: 600px">
                                     <div>
                                         <label>Expert Address :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Address" name="Expert_Address" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Address" name="Expert_Address" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Phone Number :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Phone Number" name="Expert_HP" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Phone Number" name="Expert_HP" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Password :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Password" name="Expert_Pass" required>
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Password" name="Expert_Pass" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert CV :</label>&nbsp;&nbsp;&nbsp;
-                                        <input class="form-control form-control-sm" id="inputboxstyle" type="file"placeholder="Enter Expert CV" name="Expert_CV" required>
+                                        <input class="form-control form-control-sm" id="inputboxstyle" type="file"placeholder="Enter Expert CV" name="Expert_CV" >
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +166,7 @@
                                 <h6 class="text-uppercase fw-bolder">RESEARCH AREA</h6>
                                 <h6 class="text-uppercase fw-bolder">CURRENT RESEARCH AREA :</h6>
                                 <label>ENTER RESEARCH AREA:</label><br>
-                                <select class="form-select" aria-label="Default select example" id="inputboxstyle" required>
+                                <select class="form-select" aria-label="Default select example" id="inputboxstyle" >
                                     <option>CHOOSE RESEARCH AREA</option>
                                     <option value="ARTIFICIAL INTELLIGENCE">ARTIFICIAL INTELLIGENCE</option>
                                     <option value="BIG DATA">BIG DATA</option>
@@ -256,11 +210,11 @@
                                 </table>
                                 <div style="padding-top: 10px;">
                                     <label>Publication Name :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Name" name="Publication_Title" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Name" name="Publication_Title" >
                                 </div>
                                 <div style="padding-top: 15px;">
                                     <label>Publication Date :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" name="Publication_Date" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" name="Publication_Date" >
                                     <em>dd-mm-yyyy</em>
                                 </div>
                                 <br>
@@ -299,11 +253,11 @@
                                 <h6>ADD SOCIAL MEDIA ACCOUNT</h6>
                                 <div style="padding-top: 10px;">
                                     <label>Username :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Username" name="SMA_Username" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Username" name="SMA_Username" >
                                 </div>
                                 <div style="padding-top: 10px;">
                                     <label>Social Media Type :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" name="SMA_AccType" required>
+                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" name="SMA_AccType" >
                                     &nbsp;&nbsp;&nbsp;
                                     <button type="submit" class="btn btn-primary" name="submitsocmedupdate">UPDATE SOCIAL MEDIA</button>
                                 </div>
