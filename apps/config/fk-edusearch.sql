@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2023 at 12:54 PM
+-- Generation Time: Jun 17, 2023 at 03:20 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -91,10 +91,25 @@ CREATE TABLE `post` (
   `Post_ID` varchar(10) NOT NULL,
   `Post_Title` varchar(20) NOT NULL,
   `Post_Description` varchar(50) NOT NULL,
-  `Post_AssignDate` date NOT NULL,
-  `Post_ExpiryDate` date NOT NULL,
+  `Post_AssignDate` date DEFAULT NULL,
+  `Post_ExpiryDate` date DEFAULT NULL,
   `Post_Status` varchar(10) NOT NULL,
-  `CC_ID` varchar(10) DEFAULT NULL
+  `CC_ID` varchar(10) DEFAULT NULL,
+  `Expert_ID` varchar(8) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postanswer`
+--
+
+CREATE TABLE `postanswer` (
+  `PA_ID` int(11) NOT NULL,
+  `PA_Title` varchar(30) NOT NULL,
+  `PA_Desc` varchar(100) NOT NULL,
+  `Post_ID` varchar(8) DEFAULT NULL,
+  `Expert_ID` varchar(8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -121,7 +136,8 @@ CREATE TABLE `rating` (
   `Rating_Feedback` varchar(50) NOT NULL,
   `Rating_Date` date NOT NULL,
   `User_ID` int(11) DEFAULT NULL,
-  `Post_ID` varchar(10) DEFAULT NULL
+  `Post_ID` varchar(10) DEFAULT NULL,
+  `Expert_ID` varchar(8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -217,7 +233,16 @@ ALTER TABLE `expert`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`Post_ID`),
-  ADD KEY `CC_ID` (`CC_ID`);
+  ADD KEY `CC_ID` (`CC_ID`),
+  ADD KEY `post_ibfk_1` (`Expert_ID`);
+
+--
+-- Indexes for table `postanswer`
+--
+ALTER TABLE `postanswer`
+  ADD PRIMARY KEY (`PA_ID`),
+  ADD KEY `Post_ID` (`Post_ID`),
+  ADD KEY `Expert_ID` (`Expert_ID`);
 
 --
 -- Indexes for table `publication`
@@ -231,7 +256,8 @@ ALTER TABLE `publication`
 ALTER TABLE `rating`
   ADD PRIMARY KEY (`Rating_ID`),
   ADD KEY `User_ID` (`User_ID`),
-  ADD KEY `Post_ID` (`Post_ID`);
+  ADD KEY `Post_ID` (`Post_ID`),
+  ADD KEY `Expert_ID` (`Expert_ID`);
 
 --
 -- Indexes for table `report`
@@ -262,6 +288,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `postanswer`
+--
+ALTER TABLE `postanswer`
+  MODIFY `PA_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -304,14 +336,22 @@ ALTER TABLE `expert`
 -- Constraints for table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`CC_ID`) REFERENCES `course_code` (`CC_ID`);
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`Expert_ID`) REFERENCES `expert` (`Expert_ID`);
+
+--
+-- Constraints for table `postanswer`
+--
+ALTER TABLE `postanswer`
+  ADD CONSTRAINT `postanswer_ibfk_1` FOREIGN KEY (`Post_ID`) REFERENCES `post` (`Post_ID`),
+  ADD CONSTRAINT `postanswer_ibfk_2` FOREIGN KEY (`Expert_ID`) REFERENCES `expert` (`Expert_ID`);
 
 --
 -- Constraints for table `rating`
 --
 ALTER TABLE `rating`
   ADD CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`),
-  ADD CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`Post_ID`) REFERENCES `post` (`Post_ID`);
+  ADD CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`Post_ID`) REFERENCES `post` (`Post_ID`),
+  ADD CONSTRAINT `rating_ibfk_3` FOREIGN KEY (`Expert_ID`) REFERENCES `expert` (`Expert_ID`);
 
 --
 -- Constraints for table `report`
