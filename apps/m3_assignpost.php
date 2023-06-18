@@ -2,9 +2,11 @@
     session_start();
     include "config/connection.php";
 
-    if (isset($_SESSION['logged_in']) && isset($_SESSION['admin_id'])) {
-        $expertId = $_SESSION['admin_id'];
-    }
+    // if (isset($_SESSION['logged_in']) && isset($_SESSION['admin_id'])) {
+    //     $expertId = $_SESSION['admin_id'];
+    // }
+
+    $expertId = 1; //dummy data
 ?>
 
 <!DOCTYPE html>
@@ -81,24 +83,55 @@
                         <thead>
                             <tr style="background-color: #D3D3D3;">
                                 <th scope="col"style="width: 50px;">No</th>
+                                <th scope="col"style="width: 150px;">Post ID</th>
                                 <th scope="col"style="width: 150px;">Post Title</th>
-                                <th scope="col"style="width: 150px;">Course Code</th>
+                                <th scope="col"style="width: 150px;">Post Status</th>
                                 <th scope="col"style="width: 200px;">Assign Expert</th>
                                 <th scope="col"style="width: 80px;">Asign</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td class="d-flex justify-content-around">
-                                    <button class="btn btn-transparent">
-                                        <img src="assets/img/paper.png" alt="assign" class="imgintable">
-                                    </button>
-                                </td>
-                            </tr>
+                            <?php
+                                try {
+                                    $sql = "SELECT Post_ID, Post_Title, Post_Status FROM post";
+
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();
+
+                                    $results = $stmt->fetchAll(); // Fetch the results
+
+                                    $counter = 0;
+
+                                    foreach ($results as $row) {
+                                        $counter++;
+                                        $Post_ID = $row['Post_ID'];
+                                        $Post_Title = $row['Post_Title'];
+                                        $Post_Status = $row['Post_Status'];
+                                        echo "<tr>";
+                                        echo "<td> $counter </td>";
+                                        echo "<td> $Post_Title </td>";
+                                        echo "<td> $Post_Status </td>";
+                                        
+                                        // tk siap
+                                        echo "<td> ee </td>";
+                                        echo "<td> ee </td>";
+                                        echo "<td class='d-flex justify-content-around'>
+                                                    <button class='btn btn-transparent'>
+                                                        <img src='assets/img/paper.png' alt='assign' class='imgintable'>
+                                                    </button>
+                                                </td>";
+                                        echo "</tr>";
+
+                                        $counter++;
+
+                                        if ($counter === 3) {
+                                            break;
+                                        }
+                                    }
+                                } catch (PDOException $e) {
+                                    die("Database query failed: " . $e->getMessage());
+                                }
+                            ?>
                         </tbody>
                         </table>
                     </div>
