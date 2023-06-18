@@ -6,7 +6,7 @@
     //     $expertId = $_SESSION['expert_id'];
     // }
 
-    $expertId = 1;
+    $expertId = 1; //dummy data
 ?>
 
 <!DOCTYPE html>

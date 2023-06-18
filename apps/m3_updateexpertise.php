@@ -1,3 +1,4 @@
+<!-- FUNCTION BUT HAVE PROBLEM -->
 <?php
     session_start();
     require "config/connection.php";
@@ -5,38 +6,107 @@
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
     //     $expertId = $_SESSION['expert_id'];
     // }
-    $expertId = 1;
-
-    // "SELECT c.*, e.Expert_Name, e.Expert_Email FROM class c JOIN expert e ON c.Class_ID = e.Expert_ID";
-
-    $sql = "SELECT e.*, u.*, ra.*, sma.*, p.* AFROM expert e 
-            JOIN user u ON e.Expert_ID = u.Expert_ID
-    JOIN research_area ra ON e.Research_Area_ID = ra.Research_Area_ID
-    JOIN sma ON e.SMA_ID = sma.SMA_ID
-    JOIN publication p ON e.Publication_ID = p.Publication_ID
-    WHERE e.Expert_ID = :expertId
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":expertId", $expertId, PDO::PARAM_INT);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $expertId = 1; //dummy data
 
     if (isset($_POST["submitprofileupdate"])) {
-        // Update expert profile
-        
-    } elseif (isset($_POST["submitexpertiseupdate"])) {
-        // Update publication
-        
-    } elseif (isset($_POST["submitsocmedupdate"])) {
-        // Update social media
-        
-    }
+        // Get form input values
+        $expertName = $_POST['Expert_Name'];
+        $expertAge = $_POST['Expert_Age'];
+        $expertAddress = $_POST['Expert_Address'];
+        $expertHP = $_POST['Expert_HP'];
+        $expertEmail = $_POST['Expert_Email'];
+        $expertPassword = $_POST['Expert_Pass'];
+        $expertCV = $_POST['Expert_CV'];
 
-    // delete part  tk siap lg
-    if(isset($_POST["deletepublication"])) {
+        // Update expert profile query
+        $sql = "UPDATE expert e
+                JOIN users u ON e.User_ID = u.User_ID
+                SET u.User_Name = :expertName, e.Expert_Age = :expertAge, e.Expert_Address = :expertAddress, e.Expert_HP = :expertHP, 
+                    u.User_Email = :expertEmail, u.User_Password = :expertPassword, e.Expert_CV_FilePath = :expertCV
+                WHERE e.Expert_ID = :expertId";
+
+        // Prepare the statement
+        $stmt = $conn->prepare($sql);
+
+        // Bind the updated values
+        $stmt->bindParam(':expertName', $expertName);
+        $stmt->bindParam(':expertAge', $expertAge);
+        $stmt->bindParam(':expertAddress', $expertAddress);
+        $stmt->bindParam(':expertHP', $expertHP);
+        $stmt->bindParam(':expertEmail', $expertEmail);
+        $stmt->bindParam(':expertPassword', $expertPassword);
+        $stmt->bindParam(':expertCV', $expertCV);
+        $stmt->bindParam(':expertId', $expertId);
+
+        // Execute the update
+        if ($stmt->execute()) {
+            echo "<script>alert('Profile is updated');window.location.href='m3_updateexpertise.php';</script>";
+            exit();
+        } else {
+            echo "<script>alert('Failed to update profile');</script>";
+        }
+    } elseif (isset($_POST["submitaddpublication"])) {
+        // Insert publication
+        $Publication_Title = $_POST['Publication_Title'];
+        $Publication_Date = $_POST['Publication_Date'];
+        
+        // Insert publication query
+        $insertStmt = $conn->prepare("INSERT INTO publication (Publication_Title, Publication_Date, Expert_ID) VALUES (:title, :date, :expertId)");
+        $insertStmt->bindParam(':title', $Publication_Title);
+        $insertStmt->bindParam(':date', $Publication_Date);
+        $insertStmt->bindParam(':expertId', $expertId);
+        
+        if ($insertStmt->execute()) {
+            echo "<script>alert('Publication added successfully');window.location.href='m3_updateexpertise.php';</script>";
+        } else {
+            echo "<script>alert('Failed to add publication');</script>";
+        }
+    } elseif (isset($_POST["submitaddsocmed"])) {
+        // Insert social media
+        $SMA_Username = $_POST['SMA_Username'];
+        $SMA_AccType = $_POST['SMA_AccType'];
+        
+        // Insert social media query
+        $insertStmt = $conn->prepare("INSERT INTO socmedacc (SMA_Username, SMA_AccType, Expert_ID) VALUES (:username, :accType, :expertId)");
+        $insertStmt->bindParam(':username', $SMA_Username);
+        $insertStmt->bindParam(':accType', $SMA_AccType);
+        $insertStmt->bindParam(':expertId', $expertId);
+        
+        if ($insertStmt->execute()) {
+            echo "<script>alert('Social media entry added successfully');window.location.href='m3_updateexpertise.php';</script>";
+        } else {
+            echo "<script>alert('Failed to add social media entry');</script>";
+        }
+    }
+    
+    // NOT DELETE DATA IN DB
+    if (isset($_POST["deletepublication"])) {
+        $publicationId = $_POST["Publication_ID"];
+    
+        // Delete publication query
+        $deleteStmt = $conn->prepare("DELETE FROM publication WHERE Publication_ID = :publicationId AND Expert_ID = :expertid");
+        $deleteStmt->bindParam(':publicationId', $publicationId);
+        $deleteStmt->bindParam(':expertid', $expertId);
+        
+        if ($deleteStmt->execute()) {
+            echo "<script>alert('Publication deleted');window.location.href='m3_updateexpertise.php';</script>";
+        } else {
+            echo "<script>alert('Failed to delete publication');</script>";
+        }
 
     } elseif(isset($_POST["deletesocmed"])) {
+        $socmedAccId = $_POST["SMA_ID"];
 
+        // Delete social media account query
+        $deleteStmt = $conn->prepare("DELETE FROM socmedacc WHERE SMA_ID = :socmedAccId AND Expert_ID = :expertId");
+        $deleteStmt->bindParam(':socmedAccId', $socmedAccId);
+        $deleteStmt->bindParam(':expertId', $expertId);
+
+        if ($deleteStmt->execute()) {
+            echo "<script>alert('Social media account deleted');window.location.href='m3_updateexpertise.php';</script>";
+        } else {
+            echo "<script>alert('Failed to delete social media account');</script>";
+        }
     } 
 ?>
 
@@ -112,45 +182,60 @@
                     <div>
                         <form action="m3_updateexpertise.php" method="post">
                             <h5 class="text-uppercase fw-bolder" style="padding-bottom: 20px;">PROFILE</h5>
+                            <?php
+                                $sql = "SELECT e.*, u.* FROM expert e 
+                                        JOIN users u ON e.User_ID = u.User_ID
+                                        WHERE e.Expert_ID = :expertId";
+                    
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bindParam(":expertId", $expertId, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $row = $result[0];
+
+                                $Expert_Name = $row['User_Name'];
+                                $Expert_Age = $row['Expert_Age'];
+                                $Expert_Address = $row['Expert_Address'];
+                                $Expert_HP = $row['Expert_HP'];
+                                $Expert_Email = $row['User_Email'];
+                                $Expert_Password = $row['User_Password'];
+                                $Expert_CV = $row['Expert_CV_FilePath'];
+                            ?>
                             <div class="d-flex flex-row">
                                 <div style="width: 600px">
                                     <div>
                                         <label class="h6">Expert ID :</label>&nbsp;&nbsp;&nbsp;
-                                        <p class="h6" style="margin: 0; display: inline;" name="Expert_ID"><?php echo $expertId; ?></p>
+                                        <p class="h6" style="margin: 0; display: inline;"><?php echo $expertId; ?></p>
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Name :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Name" name="Expert_Name" >
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Name" value="<?php echo htmlspecialchars($Expert_Name) ?>" name="Expert_Name" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Age :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Age" name="Expert_Age" >
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Age" value="<?php echo htmlspecialchars($Expert_Age) ?>" name="Expert_Age" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Email :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Email" name="Expert_Email" >
-                                    </div>
-                                    <div style="padding-top: 15px;">
-                                        <label>Expert Office Number :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Office Number" name="Expert_OfficeNum" >
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Email" value="<?php echo htmlspecialchars($Expert_Email) ?>" name="Expert_Email" >
                                     </div>
                                 </div>
                                 <div style="width: 600px">
                                     <div>
                                         <label>Expert Address :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Address" name="Expert_Address" >
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Address" value="<?php echo htmlspecialchars($Expert_Address) ?>" name="Expert_Address" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Phone Number :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Phone Number" name="Expert_HP" >
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Phone Number" value="<?php echo htmlspecialchars($Expert_HP) ?>" name="Expert_HP" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert Password :</label>&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Password" name="Expert_Pass" >
+                                        <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Expert Password" value="<?php echo htmlspecialchars($Expert_Password) ?>" name="Expert_Pass" >
                                     </div>
                                     <div style="padding-top: 15px;">
                                         <label>Expert CV :</label>&nbsp;&nbsp;&nbsp;
-                                        <input class="form-control form-control-sm" id="inputboxstyle" type="file"placeholder="Enter Expert CV" name="Expert_CV" >
+                                        <input class="form-control form-control-sm" id="inputboxstyle" type="file"placeholder="Enter Expert CV" value="<?php echo htmlspecialchars($Expert_CV) ?>" name="Expert_CV" >
                                     </div>
                                 </div>
                             </div>
@@ -163,24 +248,17 @@
                             <br>
                             <div>
                                 <h5 class="text-uppercase fw-bolder" style="padding-bottom: 15px;">CREDENTIALS</h5>
-                                <h6 class="text-uppercase fw-bolder">RESEARCH AREA</h6>
                                 <h6 class="text-uppercase fw-bolder">CURRENT RESEARCH AREA :</h6>
-                                <label>ENTER RESEARCH AREA:</label><br>
-                                <select class="form-select" aria-label="Default select example" id="inputboxstyle" >
-                                    <option>CHOOSE RESEARCH AREA</option>
-                                    <option value="ARTIFICIAL INTELLIGENCE">ARTIFICIAL INTELLIGENCE</option>
-                                    <option value="BIG DATA">BIG DATA</option>
-                                    <option value="CYBERSECURITY">CYBERSECURITY</option>
-                                    <option value="GRAPHIC DESIGNING">GRAPHIC DESIGNING</option>
-                                    <option value="SOFTWARE MANAGEMENT">SOFTWARE MANAGEMENT</option>
-                                    <option value="BLOCKCHAIN">BLOCKCHAIN</option>
-                                </select>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="form-control" id="inputboxstyle" placeholder="For Expertise That Not In The List">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button type="submit" class="btn btn-primary" name="submitexpertiseupdate">UPDATE EXPERTISE</button>
-                                &nbsp;&nbsp;
-                                <button type="reset" class="btn btn-danger">RESET</button>
+                                <?php
+                                    $stmt = $conn->prepare("SELECT * FROM research_area WHERE expert_id = :expertId");
+                                    $stmt->bindParam(':expertId', $expertId);
+                                    $stmt->execute();
+                                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                    $row = $result[0];
+                                    $ResearchArea = $row['ResearchArea_Name'];
+                                ?>
+                                <input type="text" class="form-control fw-bolder text-uppercase" id="inputboxstyle" value="<?= $ResearchArea ?>" disabled>
                             </div>
                             <br>
                             <div>
@@ -196,16 +274,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                    $stmt = $conn->prepare("SELECT * FROM publication WHERE Expert_ID = :expertId");
+                                    $stmt->bindParam(':expertId', $expertId);
+                                    $stmt->execute();
+                                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    $counter = 0;
+                                ?>
+
+                                <?php
+                                    foreach ($result as $row): 
+                                    $counter++;
+                                ?>
                                     <tr>
-                                        <td>Mark</td>
-                                        <td>Mark</td>
-                                        <td>Mark</td>
+                                        <td><?= $counter ?></td>
+                                        <td><?= $row['Publication_Date'] ?></td>
+                                        <td><?= $row['Publication_Title'] ?></td>
                                         <td class="d-flex justify-content-around">
                                             <button class="btn btn-transparent" name="deletepublication">
                                                 <img src="assets/img/dustbin.png" alt="view" class="imgintable">
                                             </button>
                                         </td>
                                     </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                                 </table>
                                 <div style="padding-top: 10px;">
@@ -215,11 +306,11 @@
                                 <div style="padding-top: 15px;">
                                     <label>Publication Date :</label>&nbsp;&nbsp;&nbsp;
                                     <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" name="Publication_Date" >
-                                    <em>dd-mm-yyyy</em>
+                                    <em>yyyy-mm-dd</em>
                                 </div>
                                 <br>
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-primary" name="submitpublicationeupdate">UPDATE PUBLICATION</button>
+                                    <button type="submit" class="btn btn-primary" name="submitaddpublication">ADD PUBLICATION</button>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <button type="reset" class="btn btn-secondary">VISUALIZE PUBLICATION</button>
                                 </div>
@@ -237,16 +328,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                    $stmt = $conn->prepare("SELECT * FROM socmedacc WHERE Expert_ID = :expertId");
+                                    $stmt->bindParam(':expertId', $expertId);
+                                    $stmt->execute();
+                                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    $counter = 0;
+                                ?>
+
+                                <?php
+                                    foreach ($result as $row): 
+                                    $counter++;
+                                ?>
                                     <tr>
-                                        <td>Mark</td>
-                                        <td>Mark</td>
-                                        <td>Mark</td>
+                                        <td><?= $counter ?></td>
+                                        <td><?= $row['SMA_AccType'] ?></td>
+                                        <td><?= $row['SMA_Username'] ?></td>
                                         <td class="d-flex justify-content-around">
                                             <button class="btn btn-transparent" name="deletesocmed">
                                                 <img src="assets/img/dustbin.png" alt="view" class="imgintable">
                                             </button>
                                         </td>
                                     </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                                 </table>
                                 <br>
@@ -259,7 +363,7 @@
                                     <label>Social Media Type :</label>&nbsp;&nbsp;&nbsp;
                                     <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Social Media Type" name="SMA_AccType" >
                                     &nbsp;&nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-primary" name="submitsocmedupdate">UPDATE SOCIAL MEDIA</button>
+                                    <button type="submit" class="btn btn-primary" name="submitaddsocmed">ADD SOCIAL MEDIA</button>
                                 </div>
                             </div>
                         </form>

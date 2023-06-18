@@ -1,12 +1,14 @@
+<!-- FUNCTION BUT HAVE PROBLEM -->
 <?php
-include "config/connection.php";
-session_start();
+    session_start();
+    require "config/connection.php";
 
-// if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
-//     $Expert_ID = $_SESSION['Expert_ID'];
-// }
 
-$Expert_ID = 1;
+    // if (isset($_SESSION['logged_in']) && isset($_SESSION['Expert_ID'])) {
+    //     $expertId = $_SESSION['Expert_ID'];
+    // }
+
+    $expertId = 1; //dummy data
 ?>
 
 <!DOCTYPE html>
@@ -94,7 +96,7 @@ $Expert_ID = 1;
 
                             $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID AND Post_ID = :Post_ID";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bindParam(':Expert_ID', $Expert_ID);
+                            $stmt->bindParam(':Expert_ID', $expertId);
                             $stmt->bindParam(':Post_ID', $Post_ID);
                             $stmt->execute();
 
@@ -128,7 +130,7 @@ $Expert_ID = 1;
                             $stmt->bindParam(':PA_Title', $PA_Title);
                             $stmt->bindParam(':PA_Desc', $PA_Desc);
                             $stmt->bindParam(':Post_ID', $Post_ID);
-                            $stmt->bindParam(':Expert_ID', $Expert_ID);
+                            $stmt->bindParam(':Expert_ID', $expertId);
                             $stmt->execute();
 
                             $updatePostStatus = "UPDATE post SET Post_Status = 'ANSWERED' WHERE Post_ID = :Post_ID";
