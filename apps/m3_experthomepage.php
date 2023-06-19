@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include "config/connection.php";
+    require "config/connection.php";
 
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
     //     $expertId = $_SESSION['expert_id'];

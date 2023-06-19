@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include "config/connection.php";
+    require "config/connection.php";
 
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
     //     $expertId = $_SESSION['expert_id'];
@@ -80,34 +80,30 @@
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">ALL FEEDBACK</h5>
             </div>
             <?php
-                try {
-                    $sql = "SELECT R.Rating_Feedback, U.User_Name FROM rating R
-                            JOIN users U ON R.User_ID = U.User_ID
-                            WHERE R.Expert_ID = :expert_id";
+                $sql = "SELECT R.Rating_Feedback, U.User_Name FROM rating R
+                        JOIN users U ON R.User_ID = U.User_ID
+                        WHERE R.Expert_ID = :expert_id";
 
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
-                    $stmt->execute();
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
+                $stmt->execute();
 
-                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                    foreach ($results as $row) {
-                        $ratingFeedback = $row['Rating_Feedback'];
-                        $userName = $row['User_Name'];
+                foreach ($results as $row) {
+                    $ratingFeedback = $row['Rating_Feedback'];
+                    $userName = $row['User_Name'];
             ?>
-                    <div style='padding: 20px 0px 0px 40px'>
-                        <div id='feedbackbox'>
-                            <p><?php echo $ratingFeedback; ?></p>
-                            <p style='float: right; padding-right: 10px;'>FROM USER <?php echo $userName; ?></p>
-                        </div>
-                        <br><br>
-                    </div>
-                    <?php
-                            }
-                        } catch (PDOException $e) {
-                            die("Database query failed: " . $e->getMessage());
-                        }
-                    ?>
+            <div style='padding: 20px 0px 0px 40px'>
+                <div id='feedbackbox'>
+                    <p><?php echo $ratingFeedback; ?></p>
+                    <p style='float: right; padding-right: 10px;'>FROM USER <?php echo $userName; ?></p>
+                </div>
+                <br><br>
+            </div>
+        <?php
+                }
+        ?>
         </div>
     </div>
 

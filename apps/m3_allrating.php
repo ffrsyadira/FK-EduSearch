@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include "config/connection.php";
+    require "config/connection.php";
 
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['admin_id'])) {
     //     $expertId = $_SESSION['admin_id'];
@@ -91,9 +91,8 @@
                         </thead>
                         <tbody>
                             <?php
-                            $counter = 0;
-                            
-                            try {
+                                $counter = 0;
+                                
                                 $sql = "SELECT E.Expert_ID, U.User_Name FROM expert E
                                         JOIN users U ON E.User_ID = U.User_ID";
                                 
@@ -104,38 +103,31 @@
                                 
                                 foreach ($results as $row) {
                                     $counter++;
-                                    ?>
-                                    <tr>
-                                        <td><?php echo $counter; ?></td>
-                                        <td><?php echo $row['Expert_ID']; ?></td>
-                                        <td><?php echo $row['User_Name']; ?></td>
-                                        <td>
-                                            <?php
-                                                try {
-                                                    $sql2 = "SELECT Rating_Val FROM rating WHERE expert_ID = :expertId";
-                                                    $stmt2 = $conn->prepare($sql2);
-                                                    $stmt2->bindParam(':expertId', $row['Expert_ID']);
-                                                    $stmt2->execute();
-                                                    
-                                                    $totalRating = 0;
-                                                    $rowCount = $stmt2->rowCount();
-                                                    while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                                                        $totalRating += $row2["Rating_Val"];
-                                                    }
-                                                    $averageRating = $rowCount > 0 ? $totalRating / $rowCount : 0;
-                                                    
-                                                    echo $averageRating;
-                                                } catch(PDOException $e) {
-                                                    echo "Error: " . $e->getMessage();
-                                                }
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <?php
+                            ?>
+                                <tr>
+                                    <td><?php echo $counter; ?></td>
+                                    <td><?php echo $row['Expert_ID']; ?></td>
+                                    <td><?php echo $row['User_Name']; ?></td>
+                                    <td>
+                                        <?php
+                                            $sql2 = "SELECT Rating_Val FROM rating WHERE expert_ID = :expertId";
+                                            $stmt2 = $conn->prepare($sql2);
+                                            $stmt2->bindParam(':expertId', $row['Expert_ID']);
+                                            $stmt2->execute();
+                                            
+                                            $totalRating = 0;
+                                            $rowCount = $stmt2->rowCount();
+                                            while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                                $totalRating += $row2["Rating_Val"];
+                                            }
+                                            $averageRating = $rowCount > 0 ? $totalRating / $rowCount : 0;
+                                            
+                                            echo $averageRating;
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php
                                 }
-                            } catch(PDOException $e) {
-                                die("Database query failed: " . $e->getMessage());
-                            }
                             ?>
                         </tbody>
                         </table>

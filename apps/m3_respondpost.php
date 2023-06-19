@@ -1,4 +1,5 @@
 <!-- FUNCTION BUT HAVE PROBLEM -->
+<!-- NOT PRINT TIME YET -->
 <?php
     session_start();
     require "config/connection.php";
@@ -91,22 +92,22 @@
                         </div>
                         <hr>
                         <?php
-                        if (isset($_GET['Post_ID'])) {
-                            $Post_ID = $_GET['Post_ID'];
+                            if (isset($_GET['Post_ID'])) {
+                                $Post_ID = $_GET['Post_ID'];
 
-                            $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID AND Post_ID = :Post_ID";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->bindParam(':Expert_ID', $expertId);
-                            $stmt->bindParam(':Post_ID', $Post_ID);
-                            $stmt->execute();
+                                $sql = "SELECT Post_Title, Post_Description FROM post WHERE Expert_ID = :Expert_ID AND Post_ID = :Post_ID";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bindParam(':Expert_ID', $expertId);
+                                $stmt->bindParam(':Post_ID', $Post_ID);
+                                $stmt->execute();
 
-                            $Post_ID = '';
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $Post_ID = $row['Post_ID'];
-                                echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
-                                echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
+                                $Post_ID = '';
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    // $Post_ID = $row['Post_ID'];
+                                    echo "<h6 name='Post_Title'>" . $row['Post_Title'] . "</h6>";
+                                    echo "<p name='Post_Description'>" . $row['Post_Description'] . "</p>";
+                                }
                             }
-                        }
                         ?>
                     </div>
                 </div>
@@ -121,25 +122,25 @@
                         <button type="submit" class="btn fw-bolder" id="btnusername" name="submitrespond">POST NOW</button>
 
                         <?php
-                        if (isset($_POST['submitrespond'])) {
-                            $PA_Title = $_POST["PA_Title"];
-                            $PA_Desc = $_POST["PA_Desc"];
+                            if (isset($_POST['submitrespond'])) {
+                                $PA_Title = $_POST["PA_Title"];
+                                $PA_Desc = $_POST["PA_Desc"];
 
-                            // FUNCTION BUT Post_ID not save to table postanswer then not Post_Status not update
-                            $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
-                            $stmt->bindParam(':PA_Title', $PA_Title);
-                            $stmt->bindParam(':PA_Desc', $PA_Desc);
-                            $stmt->bindParam(':Post_ID', $Post_ID);
-                            $stmt->bindParam(':Expert_ID', $expertId);
-                            $stmt->execute();
+                                // FUNCTION BUT Post_ID not save to table postanswer then not Post_Status not update
+                                $stmt = $conn->prepare("INSERT INTO postanswer (PA_Title, PA_Desc, Post_ID, Expert_ID) VALUES (:PA_Title, :PA_Desc, :Post_ID, :Expert_ID)");
+                                $stmt->bindParam(':PA_Title', $PA_Title);
+                                $stmt->bindParam(':PA_Desc', $PA_Desc);
+                                $stmt->bindParam(':Post_ID', $Post_ID);
+                                $stmt->bindParam(':Expert_ID', $expertId);
+                                $stmt->execute();
 
-                            $updatePostStatus = "UPDATE post SET Post_Status = 'ANSWERED' WHERE Post_ID = :Post_ID";
-                            $updateStmt = $conn->prepare($updatePostStatus);
-                            $updateStmt->bindParam(':Post_ID', $Post_ID, PDO::PARAM_INT);
-                            $updateStmt->execute();
+                                $updatePostStatus = "UPDATE post SET Post_Status = 'Post Answered' WHERE Post_ID = :Post_ID";
+                                $updateStmt = $conn->prepare($updatePostStatus);
+                                $updateStmt->bindParam(':Post_ID', $Post_ID, PDO::PARAM_INT);
+                                $updateStmt->execute();
 
-                            echo "<script>alert('Your Respond Is Submit'); window.location.href='m3_acceptpost.php';</script>";
-                        }
+                                echo "<script>alert('Your Respond Is Submit'); window.location.href='m3_acceptpost.php';</script>";
+                            }
                         ?>
                     </div>
                 </form>

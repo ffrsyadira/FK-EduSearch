@@ -270,7 +270,6 @@
                                         <th scope="col"style="width: 100px;">Date</th>
                                         <th scope="col"style="width: 300px;">Publication</th>
                                         <th scope="col"style="width: 40px;">DELETE</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
