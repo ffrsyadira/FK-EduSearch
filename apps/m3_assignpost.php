@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include "config/connection.php";
+    require "config/connection.php";
 
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['admin_id'])) {
     //     $expertId = $_SESSION['admin_id'];
@@ -92,44 +92,62 @@
                         </thead>
                         <tbody>
                             <?php
-                                try {
-                                    $sql = "SELECT Post_ID, Post_Title, Post_Status FROM post";
+                                $stmt = $conn->prepare("SELECT Post_ID, Post_Title, Post_Status FROM post");
+                                $stmt->execute();
 
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
+                                $results = $stmt->fetchAll();
 
-                                    $results = $stmt->fetchAll(); // Fetch the results
+                                $counter = 0;
 
-                                    $counter = 0;
+                                foreach ($results as $row) {
+                                    $counter++;
+                                    $Post_ID = $row['Post_ID'];
+                                    $Post_Title = $row['Post_Title'];
+                                    $Post_Status = $row['Post_Status'];
+                            ?>
+                                <tr>
+                                    <td><?php echo $counter; ?></td>
+                                    <td><?php echo $Post_ID; ?></td>
+                                    <td><?php echo $Post_Title; ?></td>
+                                    <td><?php echo $Post_Status; ?></td>
+                                    <?php
+                                        $sql = "SELECT e.Expert_ID, u.User_Name FROM expert e JOIN users u WHERE e.User_ID = u.User_ID";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute();
 
-                                    foreach ($results as $row) {
-                                        $counter++;
-                                        $Post_ID = $row['Post_ID'];
-                                        $Post_Title = $row['Post_Title'];
-                                        $Post_Status = $row['Post_Status'];
-                                        echo "<tr>";
-                                        echo "<td> $counter </td>";
-                                        echo "<td> $Post_Title </td>";
-                                        echo "<td> $Post_Status </td>";
-                                        
-                                        // tk siap
-                                        echo "<td> ee </td>";
-                                        echo "<td> ee </td>";
-                                        echo "<td class='d-flex justify-content-around'>
-                                                    <button class='btn btn-transparent'>
-                                                        <img src='assets/img/paper.png' alt='assign' class='imgintable'>
-                                                    </button>
-                                                </td>";
-                                        echo "</tr>";
-
-                                        $counter++;
-
-                                        if ($counter === 3) {
-                                            break;
+                                        $expertResults = $stmt->fetchAll();
+                                    ?>
+                                    <td>
+                                        <div class="input-group">
+                                            <select class="form-select expert-select" style="width: 200px;" data-post-id="<?php echo $Post_ID; ?>">
+                                                <option value="">ASSIGN EXPERT</option>
+                                                <?php
+                                                    foreach ($expertResults as $expertRow) {
+                                                        $AssignExpert_ID = $expertRow['Expert_ID'];
+                                                        $Expert_Name = $expertRow['User_Name'];
+                                                        echo "<option value='$AssignExpert_ID'> $Expert_Name </option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class='d-flex justify-content-around'>
+                                        <button class='btn btn-transparent assign-button' data-post-id="<?php echo $Post_ID; ?>">
+                                            <img src='assets/img/paper.png' alt='assign' class='imgintable'>
+                                        </button>
+                                    </td>
+                                    <?php
+                                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                            $Post_ID = $_POST['Post_ID'];
+                                            $Expert_ID = $_POST['Expert_ID'];
+                                    
+                                            // Update the post with the assigned expert ID
+                                            $stmt = $conn->prepare("UPDATE post SET Post_Status='Post Assign', Expert_ID=? WHERE Post_ID=?");
+                                            $stmt->execute([$Expert_ID, $Post_ID]);
                                         }
-                                    }
-                                } catch (PDOException $e) {
-                                    die("Database query failed: " . $e->getMessage());
+                                    ?>
+                                </tr>
+                            <?php
                                 }
                             ?>
                         </tbody>
@@ -144,7 +162,28 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
+    <script>
+        // assign expert to post 
+        $(document).on("click", ".assign-button", function() {
+            var postId = $(this).data('post-id');
+            var selectElement = $('.expert-select[data-post-id="' + postId + '"]');
+            var expertId = selectElement.val();
 
+            // Perform AJAX request to update the post
+            $.ajax({
+                type: "POST",
+                url: "m3_assignpost.php",
+                data: {
+                    Post_ID: postId,
+                    Expert_ID: expertId
+                },
+                success: function(response) {
+                    alert("Post Assigned to Expert ID: " + expertId);
+                    location.reload();
+                }
+            });
+        });
+    </script>
     </body>
 </html>
 

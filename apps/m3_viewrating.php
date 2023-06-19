@@ -1,6 +1,7 @@
+<!-- RATING NOT SHOWING -->
 <?php
     session_start();
-    include "config/connection.php";
+    require "config/connection.php";
 
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
     //     $expertId = $_SESSION['expert_id'];
@@ -84,7 +85,21 @@
                     <h5 class="fw-bolder">YOUR RATING</h5>
                     <div class="d-flex">
                         <div id="ratebox" >
-                            <span class="h1 fw-bolder">5.0</span>
+                            <?php
+                                $sql2 = "SELECT Rating_Val FROM rating WHERE Expert_ID = :expertId";
+                                $stmt2 = $conn->prepare($sql2);
+                                $stmt2->bindParam(':expertId', $row['Expert_ID']);
+                                $stmt2->execute();
+                                
+                                $totalRating = 0;
+                                $rowCount = $stmt2->rowCount();
+                                while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                    $totalRating += $row2["Rating_Val"];
+                                }
+                                $averageRating = $rowCount > 0 ? $totalRating / $rowCount : 0;
+                                
+                                echo "<span class='h1 fw-bolder'>$averageRating</span>";
+                            ?>
                         </div>
                         &nbsp;&nbsp;&nbsp;
                         <img src="assets/img/star.png" alt="star" id="starshow">
@@ -92,16 +107,46 @@
                 </div>
                 <br>
                 <div>
-                    YOUR VISUALIZE
+                    <?php echo "<span class='h2 fw-bolder'>Total Rating is $rowCount</span>"; ?>
+                    <br>
+                    <canvas id="ratingChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
 
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Get the canvas element
+        var chartCanvas = document.getElementById('ratingChart');
+
+        // Create a new chart instance
+        var ratingChart = new Chart(chartCanvas, {
+            type: 'bar',
+            data: {
+                labels: ['0-1', '1-2', '2-3', '3-4', '4-5'],
+                datasets: [{
+                    label: 'Total Ratings',
+                    data: Object.values(ratingCounts),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Adjust the color as desired
+                    borderColor: 'rgba(75, 192, 192, 1)', // Adjust the color as desired
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
 </html>

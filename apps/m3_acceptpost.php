@@ -1,6 +1,7 @@
+<!-- NOT PRINT TIME YET -->
 <?php
     session_start();
-    include "config/connection.php";
+    require "config/connection.php";
 
     // if (isset($_SESSION['logged_in']) && isset($_SESSION['expert_id'])) {
     //     $expertId = $_SESSION['expert_id'];
@@ -82,30 +83,30 @@
                 <div class="d-flex justify-content-center align-items-center">
                     <div>
                     <?php
-                        $sql = "SELECT Post_ID, Post_Title, Post_Description FROM post WHERE expert_id = :expert_id AND Post_Status = '3'"; //Post_Status = 'NEW POST'
+                        $sql = "SELECT Post_ID, Post_Title, Post_Description FROM post WHERE expert_id = :expert_id AND Post_Status = 'Post Assign'"; //Post_Status = 'NEW POST'
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':expert_id', $expertId, PDO::PARAM_INT);
                         $stmt->execute();
 
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             $post_id = $row['Post_ID'];
-                        ?>
-                            <div id="postingbox">
-                                <div class="d-flex justify-content-between" id="postingboxpadset1">
-                                    <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
-                                    <div id="postingboxpadset3">time remaining: <?php echo "hh:mm"; ?></div>
-                                </div>
-                                <hr>
-                                <h6 name="Post_Title"><?php echo $row['Post_Title']; ?></h6>
-                                <p name="Post_Description"><?php echo $row['Post_Description']; ?></p>
-                                <?php
-                                $queryParams = array('Post_ID' => $post_id);
-                                $url = 'm3_respondpost.php?' . http_build_query($queryParams);
-                                ?>
-                                <a href="<?php echo $url; ?>" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</a>
+                    ?>
+                        <div id="postingbox">
+                            <div class="d-flex justify-content-between" id="postingboxpadset1">
+                                <h5 id="postingboxpadset2" class="fw-bolder">NEW POST!</h5>
+                                <div id="postingboxpadset3">time remaining: <?php echo "hh:mm"; ?></div>
                             </div>
-                            <br>
-                        <?php
+                            <hr>
+                            <h6 name="Post_Title"><?php echo $row['Post_Title']; ?></h6>
+                            <p name="Post_Description"><?php echo $row['Post_Description']; ?></p>
+                            <?php
+                            $queryParams = array('Post_ID' => $post_id);
+                            $url = 'm3_respondpost.php?' . http_build_query($queryParams);
+                            ?>
+                            <a href="<?php echo $url; ?>" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</a>
+                        </div>
+                        <br>
+                    <?php
                         }
                     ?>
                     </div>
