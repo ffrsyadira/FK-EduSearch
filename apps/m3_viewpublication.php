@@ -92,7 +92,6 @@
                         <h5>TOTAL PUBLICATION IS </h5>                    
                     </div>
                 </div>
-                
             </div>
             <br>
         </div>

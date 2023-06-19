@@ -84,23 +84,28 @@
                 <div>
                     <h5 class="fw-bolder">YOUR RATING</h5>
                     <div class="d-flex">
-                        <div id="ratebox" >
-                            <?php
-                                $sql2 = "SELECT Rating_Val FROM rating WHERE Expert_ID = :expertId";
-                                $stmt2 = $conn->prepare($sql2);
-                                $stmt2->bindParam(':expertId', $row['Expert_ID']);
-                                $stmt2->execute();
-                                
-                                $totalRating = 0;
-                                $rowCount = $stmt2->rowCount();
-                                while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                                    $totalRating += $row2["Rating_Val"];
-                                }
-                                $averageRating = $rowCount > 0 ? $totalRating / $rowCount : 0;
-                                
-                                echo "<span class='h1 fw-bolder'>$averageRating</span>";
-                            ?>
-                        </div>
+                    <div id="ratebox">
+                        <?php
+                            $sql = "SELECT Rating_Val FROM rating WHERE Expert_ID = :expertId";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bindParam(':expertId', $expertId);
+                            $stmt->execute();
+
+                            $totalRating = 0;
+                            $rowCount = $stmt->rowCount();
+                            while ($row2 = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $totalRating += $row2["Rating_Val"];
+                            }
+                            $averageRating = $rowCount > 0 ? $totalRating / $rowCount : 0;
+                            $formattedRating = number_format($averageRating, 1);
+
+                            if($totalRating = 0) {
+                                $formattedRating = 0;
+                            }
+
+                            echo "<span class='h1 fw-bolder'>$formattedRating</span>";
+                        ?>
+                    </div>
                         &nbsp;&nbsp;&nbsp;
                         <img src="assets/img/star.png" alt="star" id="starshow">
                     </div>
@@ -109,7 +114,34 @@
                 <div>
                     <?php echo "<span class='h2 fw-bolder'>Total Rating is $rowCount</span>"; ?>
                     <br>
-                    <canvas id="ratingChart"></canvas>
+                    <?php
+                        // Generate rating counts for each range (0-1, 1-2, 2-3, 3-4, 4-5)
+                        $ratingCounts = array(0, 0, 0, 0, 0);
+                        $sql = "SELECT COUNT(*) AS count, Rating_Val FROM rating WHERE Expert_ID = :expertId GROUP BY Rating_Val";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bindParam(':expertId', $expertId);
+                        $stmt->execute();
+
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $rating = $row["Rating_Val"];
+                            $count = $row["count"];
+
+                            if ($rating >= 0 && $rating < 1) {
+                                $ratingCounts[0] += $count;
+                            } elseif ($rating >= 1 && $rating < 2) {
+                                $ratingCounts[1] += $count;
+                            } elseif ($rating >= 2 && $rating < 3) {
+                                $ratingCounts[2] += $count;
+                            } elseif ($rating >= 3 && $rating < 4) {
+                                $ratingCounts[3] += $count;
+                            } elseif ($rating >= 4 && $rating <= 5) {
+                                $ratingCounts[4] += $count;
+                            }
+                        }
+                    ?>
+                    <div style="width: 70%;">
+                        <canvas id="ratingChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,35 +150,58 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Get the canvas element
-        var chartCanvas = document.getElementById('ratingChart');
+        $(document).ready(function() {
+            var ratingChart;
 
-        // Create a new chart instance
-        var ratingChart = new Chart(chartCanvas, {
-            type: 'bar',
-            data: {
-                labels: ['0-1', '1-2', '2-3', '3-4', '4-5'],
-                datasets: [{
-                    label: 'Total Ratings',
-                    data: Object.values(ratingCounts),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Adjust the color as desired
-                    borderColor: 'rgba(75, 192, 192, 1)', // Adjust the color as desired
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        stepSize: 1
+            function createChart() {
+                var chartCanvas = document.getElementById('ratingChart');
+                var chartContainer = $('.chart-container');
+
+                ratingChart = new Chart(chartCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: ['0-1', '1-2', '2-3', '3-4', '4-5'],
+                        datasets: [{
+                            label: 'Total Ratings',
+                            data: <?php echo json_encode($ratingCounts); ?>,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            }
+                        },
+                        maintainAspectRatio: false,
+                        responsive: true
                     }
-                }
+                });
+                resizeChart();
             }
+
+            function resizeChart() {
+                var chartContainer = $('.chart-container');
+                var containerWidth = chartContainer.width();
+                var canvas = chartContainer.find('canvas');
+
+                canvas.width(containerWidth);
+                canvas.height(containerWidth * 0.6);
+
+                ratingChart.resize();
+            }
+
+            $(window).on('resize', function() {
+                resizeChart();
+            });
+
+            createChart();
         });
     </script>
-
 </body>
 </html>
