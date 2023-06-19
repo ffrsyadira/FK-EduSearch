@@ -82,7 +82,25 @@
                         <h5 class="fw-bolder">YOUR RATING</h5>
                         <div class="d-flex">
                             <div id="ratebox" >
-                                <span class="h1 fw-bolder">5.0</span>
+                                <?php
+                                    $sql = "SELECT Rating_Val FROM rating WHERE Expert_ID = :expertId";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->bindParam(':expertId', $expertId);
+                                    $stmt->execute();
+
+                                    $totalRating = 0;
+                                    $rowCount = $stmt->rowCount();
+                                    while ($row2 = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        $totalRating += $row2["Rating_Val"];
+                                    }
+                                    $averageRating = $rowCount > 0 ? $totalRating / $rowCount : 0;
+                                    $formattedRating = number_format($averageRating, 1);
+
+                                    if($totalRating = 0) {
+                                        $formattedRating = 0;
+                                    }
+                                ?>
+                                <span class="h1 fw-bolder"><?php echo $formattedRating; ?></span>
                             </div>
                             &nbsp;&nbsp;&nbsp;
                             <img src="assets/img/star.png" alt="star" id="starshow">
