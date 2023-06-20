@@ -55,6 +55,6 @@ $(document).ready(function() {
     });
 
     $(document).on("click", "[name='backtoexpertiseupdate']", function() {
-        window.location.href = "m3_viewpublication.php";
+        window.location.href = "m3_expertiseupdate.php";
     });
 });

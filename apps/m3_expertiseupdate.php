@@ -85,16 +85,35 @@
                                 <th scope="col"style="width: 50px;">No</th>
                                 <th scope="col"style="width: 100px;">Expert ID</th>
                                 <th scope="col"style="width: 400px;">Expert Name</th>
-                                <th scope="col"style="width: 150px;">Update Made</th>
+                                <th scope="col"style="width: 150px;">Expert Status</th>
+                                <th scope="col"style="width: 200px;">Last Interaction Date</th>
                                 <th scope="col"style="width: 250px;">Operation</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                $counter = 0;
+
+                                $stmt = $conn->prepare("SELECT e.Expert_ID, e.Expert_Status, e.Expert_LastInteractionDate, u.User_Name FROM expert e JOIN users u WHERE e.User_ID = u.User_ID");
+                                $stmt->execute();
+
+                                $expertList = $stmt->fetchAll();
+
+                                foreach ($expertList as $expertRow) {
+                                    $counter++;
+                                    $Expert_ID = $expertRow['Expert_ID'];
+                                    $Expert_Status = $expertRow['Expert_Status'];
+                                    $Expert_LastInteractionDate = $expertRow['Expert_LastInteractionDate'];
+                                    $Expert_Name = $expertRow['User_Name'];
+
+                                    $formattedDate = date('d F Y', strtotime($Expert_LastInteractionDate));
+                            ?>
                             <tr>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
+                                <td> <?php echo $counter; ?></td>
+                                <td> <?php echo $Expert_ID; ?></td>
+                                <td> <?php echo $Expert_Name; ?></td>
+                                <td> <?php echo $Expert_Status; ?></td>
+                                <td> <?php echo $formattedDate; ?></td>
                                 <td class="d-flex justify-content-around">
                                     <button class="btn btn-transparent" name="viewexpertiseupdatedetail">
                                         <img src="assets/img/evaluation.png" alt="view" class="imgintable">
@@ -107,6 +126,9 @@
                                     </button>
                                 </td>
                             </tr>
+                            <?php
+                                }
+                            ?>
                         </tbody>
                         </table>
                     </div>
