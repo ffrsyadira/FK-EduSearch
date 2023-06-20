@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FK-EduSearch Administration</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>FK-EduSearch Administration</h1>
+    
+    <!-- Admin Login -->
+    <div id="admin-login" style="display: none;">
+      <h2>Admin Login</h2>
+      <input type="text" id="admin-username" placeholder="Username">
+      <input type="password" id="admin-password" placeholder="Password">
+      <button onclick="adminLogin()">Login</button>
+    </div>
+    
+    <!-- Expert Login -->
+    <div id="expert-login" style="display: none;">
+      <h2>Expert Login</h2>
+      <input type="text" id="expert-username" placeholder="Username">
+      <input type="password" id="expert-password" placeholder="Password">
+      <button onclick="expertLogin()">Login</button>
+    </div>
+    
+    <!-- Student Login -->
+    <div id="student-login" style="display: none;">
+      <h2>Student Login</h2>
+      <input type="text" id="student-username" placeholder="Username">
+      <input type="password" id="student-password" placeholder="Password">
+      <button onclick="studentLogin()">Login</button>
+    </div>
+    
+    <div id="user-list" style="display: none;">
+      <h2>User List</h2>
+      <table id="user-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>User Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="user-table-body">
+        </tbody>
+      </table>
+      <div id="user-stats">
+        <p>Total Users: <span id="total-users"></span></p>
+        <!-- Add more relevant calculations or stats here -->
+      </div>
+    </div>
+    
+    <div id="report" style="display: none;">
+      <h2>Report</h2>
+      <div id="system-performance">
+        <h3>System Performance</h3>
+        <!-- Add analytical report of system performance here -->
+      </div>
+      <div id="vulnerability-list">
+        <h3>Vulnerability List</h3>
+        <!-- Add list of vulnerability reports here -->
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
