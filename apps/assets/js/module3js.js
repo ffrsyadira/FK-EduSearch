@@ -32,6 +32,10 @@ $(document).ready(function() {
         window.location.href = "m3_viewrating.php";
     });
 
+    $(document).on("click", "[name='gotovisualpublication']", function() {
+        window.location.href = "m3_viewpublication.php";
+    })
+
     // ADMIN JQUERY FUNCTION
     // side navbar
     $(document).on("click", "[name='expertupdate']", function() {
@@ -51,6 +55,6 @@ $(document).ready(function() {
     });
 
     $(document).on("click", "[name='backtoexpertiseupdate']", function() {
-        window.location.href = "m3_expertiseupdate.php";
+        window.location.href = "m3_viewpublication.php";
     });
 });
