@@ -304,14 +304,14 @@
                                 </div>
                                 <div style="padding-top: 15px;">
                                     <label>Publication Date :</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="text" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" name="Publication_Date" >
+                                    <input type="date" class="form-control form-control-sm" id="inputboxstyle" placeholder="Enter Publication Date" name="Publication_Date">
                                     <em>yyyy-mm-dd</em>
                                 </div>
                                 <br>
                                 <div class="d-flex justify-content-center">
                                     <button type="submit" class="btn btn-primary" name="submitaddpublication">ADD PUBLICATION</button>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button type="reset" class="btn btn-secondary">VISUALIZE PUBLICATION</button>
+                                    <button type="reset" class="btn btn-secondary" name="gotovisualpublication">VISUALIZE PUBLICATION</button>
                                 </div>
                             </div>
                             <br>

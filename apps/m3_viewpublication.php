@@ -74,7 +74,7 @@
         <!-- content -->
         <div id="maincontentpage">
             <div class="d-flex p-2 mb-1 bg-primary text-white">
-                <button class="btn btn-transparent btn-sm">
+                <button class="btn btn-transparent btn-sm" name="updateexpertise">
                     <img src="assets/img/return.png" alt="back" style="width: 30px;">
                 </button>
                 <h5 class="text-uppercase fw-bolder" style="margin-top:5px;">VIEW PUBLICATION</h5>
@@ -82,14 +82,38 @@
             <div>
                 <div style="margin: 30px 0px 0px 30px;">
                     <div>
-                        <button type="button" class="btn btn-outline-info">Days</button>
-                        <button type="button" class="btn btn-outline-info">Weeks</button>
-                        <button type="button" class="btn btn-outline-info">Month</button>
+                        <?php
+                            $stmt = $conn->prepare("SELECT COUNT(*) AS count, Publication_Title FROM publication WHERE Expert_ID = :expertId GROUP BY Publication_Title");
+                            $stmt->bindParam(':expertId', $expertId);
+                            $stmt->execute();
+
+                            $totalCount = 0;
+
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $count = $row["count"];
+
+                                $totalCount += $count;
+                            }
+                        ?>
+                        <h5>TOTAL PUBLICATION IS <?php echo $totalCount; ?></h5>
                     </div>
-                    <div>
-                        <div></div>
-                        <br>
-                        <h5>TOTAL PUBLICATION IS </h5>                    
+                    <br>
+                    <div style="width: 60%;">
+                        <?php
+                            // Prepare the SQL statement
+                            $stmt = $conn->prepare("SELECT COUNT(*) AS count, YEAR(Publication_Date) AS publicationYear FROM publication WHERE Expert_ID = :expertId GROUP BY publicationYear");
+                            $stmt->bindParam(':expertId', $expertId);
+                            $stmt->execute();
+
+                            $data = array();
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $count = $row["count"];
+                                $year = $row["publicationYear"];
+
+                                $data[$year] = $count;
+                            }
+                        ?>
+                        <canvas id="yearChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -101,6 +125,60 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="assets/js/javascript.js" defer></script>
     <script src="assets/js/module3js.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    $(document).ready(function() {
+        var data = <?php echo json_encode($data); ?>;
+
+        // Prepare the data for the chart
+        var labels = Object.keys(data);
+        var years = [];
+        var counts = [];
+
+        // Extract the years and counts
+        labels.forEach(function(label) {
+            var count = data[label];
+            years.push(label);
+            counts.push(count);
+        });
+
+        // Create the chart
+        var ctx = document.getElementById('yearChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Publication Count',
+                    data: counts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#ccc'
+                        },
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    });
+    </script>
+
 
     </body>
 </html>

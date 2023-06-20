@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2023 at 01:13 PM
+-- Generation Time: Jun 20, 2023 at 05:41 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -40,7 +40,7 @@ CREATE TABLE `admin` (
 --
 
 CREATE TABLE `complaint` (
-  `Complaint_ID` varchar(10) NOT NULL,
+  `Complaint_ID` int(10) NOT NULL,
   `Complaint_Type` varchar(20) NOT NULL,
   `Complaint_Description` varchar(50) NOT NULL,
   `Complaint_DateSubmit` date NOT NULL,
@@ -48,25 +48,6 @@ CREATE TABLE `complaint` (
   `Complaint_Status` varchar(10) NOT NULL,
   `User_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `course_code`
---
-
-CREATE TABLE `course_code` (
-  `CC_ID` varchar(10) NOT NULL,
-  `CC_Name` varchar(30) NOT NULL,
-  `ResearchArea_ID` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `course_code`
---
-
-INSERT INTO `course_code` (`CC_ID`, `CC_Name`, `ResearchArea_ID`) VALUES
-('1', '1', NULL);
 
 -- --------------------------------------------------------
 
@@ -90,7 +71,8 @@ CREATE TABLE `expert` (
 --
 
 INSERT INTO `expert` (`Expert_ID`, `Expert_Age`, `Expert_Address`, `Expert_HP`, `Expert_CV_FilePath`, `Expert_Status`, `Expert_LastInteractionDate`, `User_ID`) VALUES
-('1', 1, '1', 1, 'm3_allrating.php', '1', '2023-06-14', 1);
+('1', 1, '1', 1, 'm3_allrating.php', '1', '2023-06-14', 1),
+('2', 2, '2', 2, '2', '2', '2023-06-05', 2);
 
 -- --------------------------------------------------------
 
@@ -104,8 +86,7 @@ CREATE TABLE `post` (
   `Post_Description` varchar(50) NOT NULL,
   `Post_AssignDate` date DEFAULT NULL,
   `Post_ExpiryDate` date DEFAULT NULL,
-  `Post_Status` varchar(10) NOT NULL,
-  `CC_ID` varchar(10) DEFAULT NULL,
+  `Post_Status` varchar(20) NOT NULL,
   `Expert_ID` varchar(8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -113,10 +94,10 @@ CREATE TABLE `post` (
 -- Dumping data for table `post`
 --
 
-INSERT INTO `post` (`Post_ID`, `Post_Title`, `Post_Description`, `Post_AssignDate`, `Post_ExpiryDate`, `Post_Status`, `CC_ID`, `Expert_ID`) VALUES
-('2', '2', '2', '2023-06-09', '2023-06-03', '2', '2', '1'),
-('3', '3', '3', '2023-06-09', '2023-06-17', '3', '3', '1'),
-('4', '4', '4', '0000-00-00', '0000-00-00', '4', '4', '1');
+INSERT INTO `post` (`Post_ID`, `Post_Title`, `Post_Description`, `Post_AssignDate`, `Post_ExpiryDate`, `Post_Status`, `Expert_ID`) VALUES
+('2', '2', '2', '2023-06-09', '2023-06-03', 'Post Assign', '1'),
+('3', '3', '3', '2023-06-09', '2023-06-17', 'Post Assign', '1'),
+('4', '4', '4', '0000-00-00', '0000-00-00', 'Post Assign', '1');
 
 -- --------------------------------------------------------
 
@@ -131,13 +112,6 @@ CREATE TABLE `postanswer` (
   `Post_ID` varchar(8) DEFAULT NULL,
   `Expert_ID` varchar(8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `postanswer`
---
-
-INSERT INTO `postanswer` (`PA_ID`, `PA_Title`, `PA_Desc`, `Post_ID`, `Expert_ID`) VALUES
-(48, '1', '1', NULL, '1');
 
 -- --------------------------------------------------------
 
@@ -168,7 +142,7 @@ INSERT INTO `publication` (`Publication_ID`, `Publication_Title`, `Publication_D
 --
 
 CREATE TABLE `rating` (
-  `Rating_ID` varchar(10) NOT NULL,
+  `Rating_ID` int(11) NOT NULL,
   `Rating_Val` float NOT NULL,
   `Rating_Feedback` varchar(50) NOT NULL,
   `Rating_Date` date NOT NULL,
@@ -255,7 +229,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`User_ID`, `User_Name`, `User_Password`, `User_Email`, `User_HP`) VALUES
-(1, '1', '1', '1', 1);
+(1, '1', '1', '1', 1),
+(2, '2', '2', '2', 2);
 
 --
 -- Indexes for dumped tables
@@ -276,13 +251,6 @@ ALTER TABLE `complaint`
   ADD KEY `User_ID` (`User_ID`);
 
 --
--- Indexes for table `course_code`
---
-ALTER TABLE `course_code`
-  ADD PRIMARY KEY (`CC_ID`),
-  ADD KEY `ResearchArea_ID` (`ResearchArea_ID`);
-
---
 -- Indexes for table `expert`
 --
 ALTER TABLE `expert`
@@ -294,7 +262,6 @@ ALTER TABLE `expert`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`Post_ID`),
-  ADD KEY `CC_ID` (`CC_ID`),
   ADD KEY `Expert_ID` (`Expert_ID`);
 
 --
@@ -357,13 +324,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `postanswer`
 --
 ALTER TABLE `postanswer`
-  MODIFY `PA_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `PA_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=708;
 
 --
 -- AUTO_INCREMENT for table `publication`
 --
 ALTER TABLE `publication`
   MODIFY `Publication_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `rating`
+--
+ALTER TABLE `rating`
+  MODIFY `Rating_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `socmedacc`
@@ -392,12 +365,6 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `complaint`
   ADD CONSTRAINT `complaint_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`);
-
---
--- Constraints for table `course_code`
---
-ALTER TABLE `course_code`
-  ADD CONSTRAINT `course_code_ibfk_1` FOREIGN KEY (`ResearchArea_ID`) REFERENCES `research_area` (`ResearchArea_ID`);
 
 --
 -- Constraints for table `expert`

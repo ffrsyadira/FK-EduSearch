@@ -1,4 +1,3 @@
-<!-- RATING NOT SHOWING -->
 <?php
     session_start();
     require "config/connection.php";
