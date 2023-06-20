@@ -138,6 +138,11 @@
                                 $updateStmt = $conn->prepare($updatePostStatus);
                                 $updateStmt->bindParam(':Post_ID', $Post_ID, PDO::PARAM_INT);
                                 $updateStmt->execute();
+                                
+                                $currentDate = date('Y-m-d');
+                                $updateInteractionStmt = $conn->prepare("UPDATE expert SET Expert_LastInteractionDate = :currentDate WHERE Expert_ID = :Expert_ID");
+                                $updateInteractionStmt->bindParam(':currentDate', $currentDate);
+                                $updateInteractionStmt->execute();
 
                                 echo "<script>alert('Your Respond Is Submit'); window.location.href='m3_acceptpost.php';</script>";
                             }

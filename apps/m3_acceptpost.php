@@ -100,8 +100,8 @@
                             <h6 name="Post_Title"><?php echo $row['Post_Title']; ?></h6>
                             <p name="Post_Description"><?php echo $row['Post_Description']; ?></p>
                             <?php
-                            $queryParams = array('Post_ID' => $post_id);
-                            $url = 'm3_respondpost.php?' . http_build_query($queryParams);
+                                $queryParams = array('Post_ID' => $post_id);
+                                $url = 'm3_respondpost.php?' . http_build_query($queryParams);
                             ?>
                             <a href="<?php echo $url; ?>" class="btn fw-bolder btnanspost btnusername" id="respondpost">ANSWER NOW</a>
                         </div>
