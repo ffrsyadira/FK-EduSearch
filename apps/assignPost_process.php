@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "module2";
+$database = "module1";
 
 
 // Create connection
