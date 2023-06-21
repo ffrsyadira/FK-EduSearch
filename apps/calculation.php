@@ -17,3 +17,22 @@ $studentCount = calculateUserCount('student');
 $lecturerCount = calculateUserCount('lecturer');
 $expertCount = calculateUserCount('expert');
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User List</title>
+    <!-- CSS styles and other HTML code for the user list page -->
+</head>
+<body>
+    <div class="container">
+        <h2>User List</h2>
+        <div>
+            <h3>Number of Students: <?php echo $studentCount; ?></h3>
+            <h3>Number of Lecturers: <?php echo $lecturerCount; ?></h3>
+            <h3>Number of Experts: <?php echo $expertCount; ?></h3>
+            <!-- Display other relevant calculations or user types -->
+        </div>
+    </div>
+</body>
+</html>
